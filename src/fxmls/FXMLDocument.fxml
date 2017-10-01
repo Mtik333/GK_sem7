@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="542.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
+   <children>
+      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File" />
+            <Menu mnemonicParsing="false" text="Options" />
+            <Menu mnemonicParsing="false" text="Help" />
+         </menus>
+      </MenuBar>
+      <TabPane fx:id="tabPane" layoutY="25.0" prefHeight="514.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <tabs>
+            <Tab text="Task 1">
+               <content>
+                  <SplitPane dividerPositions="0.1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <items>
+                        <VBox fx:id="leftVBox">
+                           <children>
+                              <ToggleButton fx:id="lineButton" mnemonicParsing="false" prefWidth="100.0" text="Draw line">
+                                    </ToggleButton>
+                              <ToggleButton fx:id="rectangleButton" mnemonicParsing="false" prefWidth="100.0" text="Draw rectangle" />
+                              <ToggleButton fx:id="circleButton" mnemonicParsing="false" prefWidth="100.0" text="Draw circle" />
+                              <Button mnemonicParsing="false" onAction="#createPrimitiveCustom" prefWidth="100.0" text="Create manually" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" prefWidth="100.0" text="Switch to click mode" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </VBox>
+                        <Pane fx:id="solver" prefHeight="483.0" prefWidth="0.0" style="-fx-background-color: white;" />
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
