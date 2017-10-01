@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -159,58 +158,49 @@ public class FXMLDocumentController implements Initializable {
     };
 
     EventHandler<MouseEvent> shapeOnMouseReleasedEventHandler
-            = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent t) {
-            if (((t.getSource())) instanceof Line) {
-                Line line = ((Line) (t.getSource()));
-                line.setStartX(line.getStartX() + line.getTranslateX());
-                line.setStartY(line.getStartY() + line.getTranslateY());
-                line.setEndX(line.getEndX() + line.getTranslateX());
-                line.setEndY(line.getEndY() + line.getTranslateY());
-                for (Entry<ShapeObj, Shape> entry : DataAccessor.getMapping().entrySet()) {
-                    if (entry.getValue().equals(line)) {
+            = (MouseEvent t) -> {
+                if (((t.getSource())) instanceof Line) {
+                    Line line = ((Line) (t.getSource()));
+                    line.setStartX(line.getStartX() + line.getTranslateX());
+                    line.setStartY(line.getStartY() + line.getTranslateY());
+                    line.setEndX(line.getEndX() + line.getTranslateX());
+                    line.setEndY(line.getEndY() + line.getTranslateY());
+                    DataAccessor.getMapping().entrySet().stream().filter((entry) -> (entry.getValue().equals(line))).forEachOrdered((entry) -> {
                         LineObj lineObj = (LineObj) entry.getKey();
                         lineObj.setxCoord(line.getStartX());
                         lineObj.setyCoord(line.getStartY());
                         entry.setValue(line);
                         DataAccessor.getMapping().replace(lineObj, entry.getValue());
-                    }
+                    });
+                    
                 }
-
-            }
-            if (((t.getSource())) instanceof Circle) {
-                Circle circle = ((Circle) (t.getSource()));
-                circle.setCenterX(circle.getCenterX() + circle.getTranslateX());
-                circle.setCenterY(circle.getCenterY() + circle.getTranslateY());
-                for (Entry<ShapeObj, Shape> entry : DataAccessor.getMapping().entrySet()) {
-                    if (entry.getValue().equals(circle)) {
+                if (((t.getSource())) instanceof Circle) {
+                    Circle circle = ((Circle) (t.getSource()));
+                    circle.setCenterX(circle.getCenterX() + circle.getTranslateX());
+                    circle.setCenterY(circle.getCenterY() + circle.getTranslateY());
+                    DataAccessor.getMapping().entrySet().stream().filter((entry) -> (entry.getValue().equals(circle))).forEachOrdered((entry) -> {
                         CircleObj circleObj = (CircleObj) entry.getKey();
                         circleObj.setxCoord(circle.getCenterX());
                         circleObj.setyCoord(circle.getCenterY());
                         entry.setValue(circle);
                         DataAccessor.getMapping().replace(circleObj, entry.getValue());
-                    }
+                    });
+                    
                 }
-
-            }
-            if (((t.getSource())) instanceof Rectangle) {
-                Rectangle rectangle = ((Rectangle) (t.getSource()));
-                rectangle.setX(rectangle.getX() + rectangle.getTranslateX());
-                rectangle.setY(rectangle.getY() + rectangle.getTranslateY());
-                for (Entry<ShapeObj, Shape> entry : DataAccessor.getMapping().entrySet()) {
-                    if (entry.getValue().equals(rectangle)) {
+                if (((t.getSource())) instanceof Rectangle) {
+                    Rectangle rectangle = ((Rectangle) (t.getSource()));
+                    rectangle.setX(rectangle.getX() + rectangle.getTranslateX());
+                    rectangle.setY(rectangle.getY() + rectangle.getTranslateY());
+                    DataAccessor.getMapping().entrySet().stream().filter((entry) -> (entry.getValue().equals(rectangle))).forEachOrdered((entry) -> {
                         RectangleObj rectangleObj = (RectangleObj) entry.getKey();
                         rectangleObj.setxCoord(rectangle.getX());
                         rectangleObj.setyCoord(rectangle.getY());
                         entry.setValue(rectangle);
                         DataAccessor.getMapping().replace(rectangleObj, entry.getValue());
-                    }
+                    });
+                    
                 }
-
-            }
-            ((Shape) t.getSource()).setTranslateX(0);
-            ((Shape) t.getSource()).setTranslateY(0);
-        }
+                ((Shape) t.getSource()).setTranslateX(0);
+                ((Shape) t.getSource()).setTranslateY(0);
     };
 }
