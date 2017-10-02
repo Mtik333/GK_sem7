@@ -30,7 +30,7 @@
                               <ToggleButton fx:id="rectangleButton" mnemonicParsing="false" prefWidth="100.0" text="Draw rectangle" />
                               <ToggleButton fx:id="circleButton" mnemonicParsing="false" prefWidth="100.0" text="Draw circle" />
                               <Button mnemonicParsing="false" onAction="#createPrimitiveCustom" prefWidth="100.0" text="Create manually" textAlignment="CENTER" wrapText="true" />
-                              <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" prefWidth="100.0" text="Switch to click mode" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" onAction="#resetToggleGroup" prefWidth="100.0" text="Switch to click mode" textAlignment="CENTER" wrapText="true" />
                            </children>
                            <opaqueInsets>
                               <Insets />

@@ -21,6 +21,17 @@ public class DataAccessor {
     private static List<ShapeObj> shapes;
     private static Map<ShapeObj, Shape> mapping;
     private static ShapeObj analyzedPrimitive;
+    private static Shape drawnShape;
+
+    public static Shape getDrawnShape() {
+        return drawnShape;
+    }
+
+    public static void setDrawnShape(Shape drawnShape) {
+        DataAccessor.drawnShape = drawnShape;
+        if (drawnShape!=null)
+            drawnShape.setDisable(false);
+    }
     private static boolean draw=false;
 
     public static List<ShapeObj> getShapes() {

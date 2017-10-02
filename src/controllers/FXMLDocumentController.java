@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
@@ -66,13 +69,91 @@ public class FXMLDocumentController implements Initializable {
         lineButton.setToggleGroup(toggleGroup);
         circleButton.setToggleGroup(toggleGroup);
         rectangleButton.setToggleGroup(toggleGroup);
+        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue==null){
+                    DataAccessor.setDrawnShape(null);
+                }
+                else if (newValue.equals(lineButton)) {
+                    DataAccessor.setDrawnShape(new Line(0, 0, 0, 0));
+                    DataAccessor.setPrimitiveType("Line");
+                }
+                else if (newValue.equals(circleButton)) {
+                    DataAccessor.setDrawnShape(new Circle(0, 0, 0));
+                    DataAccessor.setPrimitiveType("Circle");
+                }
+                else if (newValue.equals(rectangleButton)) {
+                    DataAccessor.setDrawnShape(new Rectangle(0, 0, 0, 0));
+                    DataAccessor.setPrimitiveType("Rectangle");
+                }
+            }
+
+        });
+
+        solver.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Shape shape = DataAccessor.getDrawnShape();
+                if (shape != null) {
+                    if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+                        shape.setVisible(true);
+                        shape.setTranslateX(mouseEvent.getX());
+                        shape.setTranslateY(mouseEvent.getY());
+                    }
+                    if (mouseEvent.getEventType() == MouseEvent.MOUSE_MOVED && shape.isVisible()) {
+                        if (shape instanceof Line) {
+                            ((Line) shape).setEndX(mouseEvent.getX() - shape.getTranslateX());
+                            ((Line) shape).setEndY(mouseEvent.getY() - shape.getTranslateY());
+                        }
+                        if (shape instanceof Rectangle) {
+                            ((Rectangle) shape).setWidth(mouseEvent.getX() - shape.getTranslateX());
+                            ((Rectangle) shape).setHeight(mouseEvent.getY() - shape.getTranslateY());
+                        }
+                        if (shape instanceof Circle){
+                            double radius = Math.sqrt(Math.pow(((Circle)shape).getCenterX()-(mouseEvent.getX() - shape.getTranslateX()),2)+Math.pow(((Circle)shape).getCenterY()-(mouseEvent.getY() - shape.getTranslateY()),2));
+                            ((Circle)shape).setRadius(radius);
+                        }
+                    }
+                    if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED) {
+                        shape.setVisible(true);
+                        ShapeObj shapeObj=null;
+                        switch(DataAccessor.getPrimitiveType()){
+                            case "Line":
+                                shapeObj = new LineObj(((Line)shape).getStartX(), ((Line)shape).getStartY());
+                                ((LineObj)shapeObj).setLength(Math.abs(((Line)shape).getStartX()-((Line)shape).getEndX()));
+                                break;
+                            case "Circle":
+                                shapeObj = new CircleObj(((Circle)shape).getCenterX(), ((Circle)shape).getCenterY(), ((Circle)shape).getRadius());
+                                break;
+                            case "Rectangle":
+                                shapeObj = new RectangleObj(((Rectangle)shape).getX(), ((Rectangle)shape).getY(), ((Rectangle)shape).getHeight(), ((Rectangle)shape).getWidth());
+                                break;
+                        }
+                        DataAccessor.getMapping().put(shapeObj, shape);
+                        shape.setOnMousePressed(shapeOnMousePressedEventHandler);
+                        shape.setOnMouseDragged(shapeOnMouseDraggedEventHandler);
+                        shape.setOnMouseReleased(shapeOnMouseReleasedEventHandler);
+                        solver.getChildren().add(shape);
+                        resetToggleGroup();
+                    }
+                }
+            }
+        });
+
     }
 
     @FXML
     private void createPrimitiveCustom() {
         showFXML("/fxmls/PrimitiveSelectFXML.fxml", "Draw primitive");
-        if (DataAccessor.isDraw())
+        if (DataAccessor.isDraw()) {
             drawOnCanva();
+        }
+    }
+    
+    @FXML
+    private void resetToggleGroup(){
+        toggleGroup.selectToggle(null);
     }
 
     private void showFXML(String resource, String title) {
@@ -122,7 +203,7 @@ public class FXMLDocumentController implements Initializable {
             if (t.getButton() == MouseButton.SECONDARY) {
                 Shape shape = (Shape) t.getSource();
                 DataAccessor.getMapping().entrySet().stream().filter((entry) -> (entry.getValue().equals(shape))).forEachOrdered((entry) -> {
-                DataAccessor.setAnalyzedPrimitive(entry.getKey());
+                    DataAccessor.setAnalyzedPrimitive(entry.getKey());
                 });
                 if (t.getSource() instanceof Circle) {
                     DataAccessor.setPrimitiveType("Circle");
@@ -172,7 +253,7 @@ public class FXMLDocumentController implements Initializable {
                         entry.setValue(line);
                         DataAccessor.getMapping().replace(lineObj, entry.getValue());
                     });
-                    
+
                 }
                 if (((t.getSource())) instanceof Circle) {
                     Circle circle = ((Circle) (t.getSource()));
@@ -185,7 +266,7 @@ public class FXMLDocumentController implements Initializable {
                         entry.setValue(circle);
                         DataAccessor.getMapping().replace(circleObj, entry.getValue());
                     });
-                    
+
                 }
                 if (((t.getSource())) instanceof Rectangle) {
                     Rectangle rectangle = ((Rectangle) (t.getSource()));
@@ -198,9 +279,9 @@ public class FXMLDocumentController implements Initializable {
                         entry.setValue(rectangle);
                         DataAccessor.getMapping().replace(rectangleObj, entry.getValue());
                     });
-                    
+
                 }
                 ((Shape) t.getSource()).setTranslateX(0);
                 ((Shape) t.getSource()).setTranslateY(0);
-    };
+            };
 }
