@@ -14,8 +14,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,9 +21,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -44,13 +39,6 @@ import shapes.*;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
-    private ToggleButton lineButton;
-    @FXML
-    private ToggleButton circleButton;
-    @FXML
-    private ToggleButton rectangleButton;
-    private ToggleGroup toggleGroup;
-    @FXML
     private Pane solver;
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
@@ -65,82 +53,6 @@ public class FXMLDocumentController implements Initializable {
         // TODO
         DataAccessor.setShapes(new ArrayList<>());
         DataAccessor.setMapping(new HashMap<>());
-        toggleGroup = new ToggleGroup();
-        lineButton.setToggleGroup(toggleGroup);
-        circleButton.setToggleGroup(toggleGroup);
-        rectangleButton.setToggleGroup(toggleGroup);
-        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if (newValue==null){
-                    DataAccessor.setDrawnShape(null);
-                }
-                else if (newValue.equals(lineButton)) {
-                    DataAccessor.setDrawnShape(new Line(0, 0, 0, 0));
-                    DataAccessor.setPrimitiveType("Line");
-                }
-                else if (newValue.equals(circleButton)) {
-                    DataAccessor.setDrawnShape(new Circle(0, 0, 0));
-                    DataAccessor.setPrimitiveType("Circle");
-                }
-                else if (newValue.equals(rectangleButton)) {
-                    DataAccessor.setDrawnShape(new Rectangle(0, 0, 0, 0));
-                    DataAccessor.setPrimitiveType("Rectangle");
-                }
-            }
-
-        });
-
-        solver.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Shape shape = DataAccessor.getDrawnShape();
-                if (shape != null) {
-                    if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-                        shape.setVisible(true);
-                        shape.setTranslateX(mouseEvent.getX());
-                        shape.setTranslateY(mouseEvent.getY());
-                    }
-                    if (mouseEvent.getEventType() == MouseEvent.MOUSE_MOVED && shape.isVisible()) {
-                        if (shape instanceof Line) {
-                            ((Line) shape).setEndX(mouseEvent.getX() - shape.getTranslateX());
-                            ((Line) shape).setEndY(mouseEvent.getY() - shape.getTranslateY());
-                        }
-                        if (shape instanceof Rectangle) {
-                            ((Rectangle) shape).setWidth(mouseEvent.getX() - shape.getTranslateX());
-                            ((Rectangle) shape).setHeight(mouseEvent.getY() - shape.getTranslateY());
-                        }
-                        if (shape instanceof Circle){
-                            double radius = Math.sqrt(Math.pow(((Circle)shape).getCenterX()-(mouseEvent.getX() - shape.getTranslateX()),2)+Math.pow(((Circle)shape).getCenterY()-(mouseEvent.getY() - shape.getTranslateY()),2));
-                            ((Circle)shape).setRadius(radius);
-                        }
-                    }
-                    if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED) {
-                        shape.setVisible(true);
-                        ShapeObj shapeObj=null;
-                        switch(DataAccessor.getPrimitiveType()){
-                            case "Line":
-                                shapeObj = new LineObj(((Line)shape).getStartX(), ((Line)shape).getStartY());
-                                ((LineObj)shapeObj).setLength(Math.abs(((Line)shape).getStartX()-((Line)shape).getEndX()));
-                                break;
-                            case "Circle":
-                                shapeObj = new CircleObj(((Circle)shape).getCenterX(), ((Circle)shape).getCenterY(), ((Circle)shape).getRadius());
-                                break;
-                            case "Rectangle":
-                                shapeObj = new RectangleObj(((Rectangle)shape).getX(), ((Rectangle)shape).getY(), ((Rectangle)shape).getHeight(), ((Rectangle)shape).getWidth());
-                                break;
-                        }
-                        DataAccessor.getMapping().put(shapeObj, shape);
-                        shape.setOnMousePressed(shapeOnMousePressedEventHandler);
-                        shape.setOnMouseDragged(shapeOnMouseDraggedEventHandler);
-                        shape.setOnMouseReleased(shapeOnMouseReleasedEventHandler);
-                        solver.getChildren().add(shape);
-                        resetToggleGroup();
-                    }
-                }
-            }
-        });
-
     }
 
     @FXML
@@ -149,11 +61,6 @@ public class FXMLDocumentController implements Initializable {
         if (DataAccessor.isDraw()) {
             drawOnCanva();
         }
-    }
-    
-    @FXML
-    private void resetToggleGroup(){
-        toggleGroup.selectToggle(null);
     }
 
     private void showFXML(String resource, String title) {
