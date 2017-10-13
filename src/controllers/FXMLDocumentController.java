@@ -6,6 +6,7 @@
 package controllers;
 
 import data.DataAccessor;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -28,8 +31,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import loadingfile.LoadFiles;
 import shapes.*;
 
 /**
@@ -37,7 +42,8 @@ import shapes.*;
  * @author Mateusz
  */
 public class FXMLDocumentController implements Initializable {
-
+    @FXML
+    private ImageView myImage;
     @FXML
     private Pane solver;
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
@@ -55,6 +61,29 @@ public class FXMLDocumentController implements Initializable {
         DataAccessor.setMapping(new HashMap<>());
     }
 
+    
+    @FXML
+    private void loadPPMFile() throws IOException{
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setTitle("Load PPM P3/P6 file");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PPM P3/P6 files", "*.ppm")
+        );
+        File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
+        if (file!=null){
+            Image image = LoadFiles.fetchHeader(file);
+            myImage.setFitHeight(LoadFiles.height);
+            myImage.setFitWidth(LoadFiles.width);
+            myImage.setImage(image);
+        }
+    }
+    
+    @FXML
+    private void loadJPEGFile(){
+        
+    }
+    
     @FXML
     private void createPrimitiveCustom() {
         showFXML("/fxmls/PrimitiveSelectFXML.fxml", "Draw primitive");

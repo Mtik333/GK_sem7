@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
@@ -32,6 +33,24 @@
                            </opaqueInsets>
                         </VBox>
                         <Pane fx:id="solver" prefHeight="483.0" prefWidth="0.0" style="-fx-background-color: white;" />
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
+            <Tab text="Task 2">
+               <content>
+                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                     <items>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#loadPPMFile" prefWidth="100.0" text="Load PPM file" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="100.0" text="Load JPEG file" />
+                           </children>
+                        </VBox>
+                        <Pane>
+                           <children>
+                              <ImageView fx:id="myImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                           </children></Pane>
                      </items>
                   </SplitPane>
                </content>
