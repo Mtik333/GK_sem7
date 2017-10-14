@@ -5,10 +5,12 @@
  */
 package data;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javax.imageio.metadata.IIOMetadata;
 import shapes.ShapeObj;
 
 /**
@@ -22,6 +24,33 @@ public class DataAccessor {
     private static Map<ShapeObj, Shape> mapping;
     private static ShapeObj analyzedPrimitive;
     private static Shape drawnShape;
+    private static float jpegQuality=1f;
+    private static BufferedImage image;
+
+    public static BufferedImage getImage() {
+        return image;
+    }
+
+    public static void setImage(BufferedImage image) {
+        DataAccessor.image = image;
+    }
+
+    public static float getJpegQuality() {
+        return jpegQuality;
+    }
+
+    public static void setJpegQuality(float jpegQuality) {
+        DataAccessor.jpegQuality = jpegQuality;
+    }
+
+    public static IIOMetadata getImageMetadata() {
+        return imageMetadata;
+    }
+
+    public static void setImageMetadata(IIOMetadata imageMetadata) {
+        DataAccessor.imageMetadata = imageMetadata;
+    }
+    private static IIOMetadata imageMetadata;
 
     public static Shape getDrawnShape() {
         return drawnShape;

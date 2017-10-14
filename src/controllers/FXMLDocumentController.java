@@ -6,15 +6,21 @@
 package controllers;
 
 import data.DataAccessor;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +40,13 @@ import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageInputStream;
 import loadingfile.LoadFiles;
 import shapes.*;
 
@@ -42,6 +55,7 @@ import shapes.*;
  * @author Mateusz
  */
 public class FXMLDocumentController implements Initializable {
+
     @FXML
     private ImageView myImage;
     @FXML
@@ -61,9 +75,8 @@ public class FXMLDocumentController implements Initializable {
         DataAccessor.setMapping(new HashMap<>());
     }
 
-    
     @FXML
-    private void loadPPMFile() throws IOException{
+    private void loadPPMFile() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setTitle("Load PPM P3/P6 file");
@@ -71,19 +84,70 @@ public class FXMLDocumentController implements Initializable {
                 new FileChooser.ExtensionFilter("PPM P3/P6 files", "*.ppm")
         );
         File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
-        if (file!=null){
+        if (file != null) {
             Image image = LoadFiles.fetchHeader(file);
             myImage.setFitHeight(LoadFiles.height);
             myImage.setFitWidth(LoadFiles.width);
             myImage.setImage(image);
         }
     }
-    
+
     @FXML
-    private void loadJPEGFile(){
-        
+    private void loadJPEGFile() throws FileNotFoundException, IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setTitle("Load PPM P3/P6 file");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPG/JPEG files", "*.jpg", "*.jpeg")
+        );
+        File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
+        if (file != null) {
+            FileInputStream fis = new FileInputStream(file);
+//            int one;
+//            int two;
+//            one = ((int) fis.read() & 0xff);
+//            two = ((int) fis.read() & 0xff);
+//            if (one == 255 && two == 216) {
+                BufferedImage src = null;
+                Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
+                ImageReader reader = it.next();
+                ImageInputStream iis = ImageIO.createImageInputStream(fis);
+                reader.setInput(iis, false, false);
+                src = reader.read(0);
+                DataAccessor.setImageMetadata(reader.getImageMetadata(0));
+                DataAccessor.setImage(src);
+               //BufferedImage image = ImageIO.read(file);
+                myImage.setFitHeight(src.getHeight());
+                myImage.setFitWidth(src.getWidth());
+                myImage.setImage(SwingFXUtils.toFXImage(src, null));
+            //}
+
+        }
     }
-    
+
+    @FXML
+    private void saveAsJPEG() throws IOException {
+        FileChooser fileChooser1 = new FileChooser();
+        fileChooser1.setTitle("Zapisz obraz");
+        fileChooser1.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPG/JPEG images", "*.jpg")
+        );
+        File file1 = fileChooser1.showSaveDialog(solver.getScene().getWindow());
+        if (file1 != null && myImage.getImage() != null) {
+            showFXML("/fxmls/ImageQualityFXML.fxml", "Image quality");
+            Iterator iter = ImageIO.getImageWritersByMIMEType("image/jpeg");
+            ImageWriter writer = (ImageWriter) iter.next();
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            iwp.setCompressionQuality(DataAccessor.getJpegQuality());
+            FileImageOutputStream output = new FileImageOutputStream(file1);
+            writer.setOutput(output);
+            IIOImage image = new IIOImage((RenderedImage) DataAccessor.getImage(), null, DataAccessor.getImageMetadata());
+            writer.write(null, image, iwp);
+            writer.dispose();
+        }
+    }
+
     @FXML
     private void createPrimitiveCustom() {
         showFXML("/fxmls/PrimitiveSelectFXML.fxml", "Draw primitive");
