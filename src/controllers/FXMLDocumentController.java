@@ -98,6 +98,12 @@ public class FXMLDocumentController implements Initializable {
             bGr.drawImage(bimage, 0, 0, null);
             bGr.dispose();
             DataAccessor.setImage(bimage);
+            
+            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/bmp");
+            ImageReader reader = it.next();
+            ImageInputStream iis = ImageIO.createImageInputStream(file);
+            reader.setInput(iis, false, false);
+            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
         }
     }
 
@@ -112,11 +118,6 @@ public class FXMLDocumentController implements Initializable {
         File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
         if (file != null) {
             FileInputStream fis = new FileInputStream(file);
-//            int one;
-//            int two;
-//            one = ((int) fis.read() & 0xff);
-//            two = ((int) fis.read() & 0xff);
-//            if (one == 255 && two == 216) {
             BufferedImage src = null;
             Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
             ImageReader reader = it.next();

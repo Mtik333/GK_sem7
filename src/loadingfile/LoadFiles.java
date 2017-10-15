@@ -24,7 +24,7 @@ import javafx.scene.paint.Color;
 public class LoadFiles {
 
     public static File myFile;
-    public static int[] myResolution = new int[2];
+    public static int[] myResolution;
     public static int width;
     public static int height;
     public static double scale;
@@ -42,6 +42,7 @@ public class LoadFiles {
         x=0;
         y=0;
         i=0;
+        myResolution = new int[2];
         myFile = file;
         newLines=4;
         Image image = null;
@@ -73,12 +74,13 @@ public class LoadFiles {
                         for (int j=0; j<values.length; j++){
                             try {
                                 value=Integer.parseInt(values[j]);
+                                myResolution[i++]=value;
                               } catch (NumberFormatException e) {
                                 //
                               }
                         }
                         if (value!=0){
-                            myResolution[i++]=value;
+                            //myResolution[i++]=value;
                             stillComment=false;
                             resolution=myResolution[0]+" "+myResolution[1];
                             break;
@@ -100,6 +102,7 @@ public class LoadFiles {
             }
         }
         else{
+            newLines--;
             resolution=comment;
         }
         String max="";
@@ -112,10 +115,15 @@ public class LoadFiles {
             }
             else if (max2.matches(".*\\d+.*")){
                 isMax=true;
+                if (max2.contains("#")){
+                    max2=max2.substring(0,max2.indexOf("#"));
+                    max2=max2.replace("\t", "");
+                    max2=max2.replace("\\s","");
+                }
                 scale = 255.0 / ((double)Integer.parseInt(max2.trim()));
                 break;
             }
-        }
+        }        
         String[] values = resolution.split(" ");
         width = Integer.parseInt(values[0]);
         height = Integer.parseInt(values[1]);
@@ -255,13 +263,15 @@ public class LoadFiles {
         int countLines=0;
         boolean test = true;
         int channel = 0;
+        int value = -1;
         int r = 0;
         int g = 0;
         int b = 0;
-        int y = 0;
-        int x = 0;
-        for (int i=0; i<bytes.length; i++){
-            if (bytes[i]==13){
+        int step = 0;
+        boolean afterHeader=false;
+        Color color;
+        for (int z=0; z<bytes.length; z++){
+            if (bytes[z]==0x0a && !afterHeader){
                 if (countLines>=newLines){
                     continue;
                 }
@@ -269,9 +279,44 @@ public class LoadFiles {
             }
             else{
                 if (countLines==newLines){
-                     
-                    
-                    
+                    if (step==0){
+                        if (height * width * 6 == bytes.length-z && scale > 1) {
+                            step = 6;
+                        }
+                        else step=3;
+                    }
+                    afterHeader=true;
+                    if (step==3){
+                        value = bytes[z] & 0xff;
+                    }
+                    else {
+                        value = bytes[z++] & 0xff;
+                        value += bytes[z] & 0xff;
+                    }
+                    switch (channel) {
+                        case 0:
+                            r = (int)(value*scale);
+                            break;
+                        case 1:
+                            g = (int)(value*scale);
+                            break;
+                        case 2:
+                            b = (int)(value*scale);
+                            break;
+                    }
+                    value=0;
+                    channel = (channel + 1) % 3;
+                    if (channel == 0) {
+                        color = Color.rgb(r, g, b);
+                        r = 0;
+                        g = 0;
+                        b = 0;
+                        pwr.setColor(x++, y, color);
+                        if (x == width) {
+                            x = 0;
+                            y++;
+                        }
+                    }
                 }
             }
         }
