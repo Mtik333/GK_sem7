@@ -6,6 +6,7 @@
 package controllers;
 
 import data.DataAccessor;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -85,10 +86,18 @@ public class FXMLDocumentController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
         if (file != null) {
+
             Image image = LoadFiles.fetchHeader(file);
             myImage.setFitHeight(LoadFiles.height);
             myImage.setFitWidth(LoadFiles.width);
             myImage.setImage(image);
+
+            BufferedImage bimage = new BufferedImage((int)image.getWidth(), (int)image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            // Draw the image on to the buffered image
+            Graphics2D bGr = bimage.createGraphics();
+            bGr.drawImage(bimage, 0, 0, null);
+            bGr.dispose();
+            DataAccessor.setImage(bimage);
         }
     }
 
@@ -108,18 +117,18 @@ public class FXMLDocumentController implements Initializable {
 //            one = ((int) fis.read() & 0xff);
 //            two = ((int) fis.read() & 0xff);
 //            if (one == 255 && two == 216) {
-                BufferedImage src = null;
-                Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
-                ImageReader reader = it.next();
-                ImageInputStream iis = ImageIO.createImageInputStream(fis);
-                reader.setInput(iis, false, false);
-                src = reader.read(0);
-                DataAccessor.setImageMetadata(reader.getImageMetadata(0));
-                DataAccessor.setImage(src);
-               //BufferedImage image = ImageIO.read(file);
-                myImage.setFitHeight(src.getHeight());
-                myImage.setFitWidth(src.getWidth());
-                myImage.setImage(SwingFXUtils.toFXImage(src, null));
+            BufferedImage src = null;
+            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
+            ImageReader reader = it.next();
+            ImageInputStream iis = ImageIO.createImageInputStream(fis);
+            reader.setInput(iis, false, false);
+            src = reader.read(0);
+            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
+            DataAccessor.setImage(src);
+            //BufferedImage image = ImageIO.read(file);
+            myImage.setFitHeight(src.getHeight());
+            myImage.setFitWidth(src.getWidth());
+            myImage.setImage(SwingFXUtils.toFXImage(src, null));
             //}
 
         }

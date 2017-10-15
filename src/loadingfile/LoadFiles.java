@@ -24,80 +24,151 @@ import javafx.scene.paint.Color;
 public class LoadFiles {
 
     public static File myFile;
+    public static int[] myResolution = new int[2];
     public static int width;
     public static int height;
     public static double scale;
     public static int numberOfBytes;
     public static int newLines=4;
+    public static int x=0;
+    public static int y=0;
+    public static int i=0;
+    public static String mess;
+    public static PixelWriter pwr;
+    public static WritableImage wri;
+    public static BufferedReader br;
 
     public static Image fetchHeader(File file) throws FileNotFoundException, IOException {
+        x=0;
+        y=0;
+        i=0;
         myFile = file;
         newLines=4;
         Image image = null;
-        BufferedReader br = new BufferedReader(new FileReader(file.getPath()));
+        br = new BufferedReader(new FileReader(file.getPath()));
         String headerType = br.readLine();
         if (!headerType.equals("P3") && !headerType.equals("P6")){
             return null;
         }
+        //br.mark(100);
         String comment = br.readLine();
-        boolean stillComment = true;
-        String resolution = br.readLine();
-        while (stillComment) {
-            if (resolution.contains("#")) {
-                newLines++;
-                resolution = br.readLine();
-            } else {
-                stillComment=false;
+        String resolution;
+        if (comment.contains("#")){
+            boolean stillComment = true;
+            resolution = br.readLine();
+            while (stillComment) {
+                if (resolution.isEmpty()){
+                    resolution = br.readLine();
+                    continue;
+                }
+                if (resolution.contains("#") || !resolution.isEmpty()) {
+                    int substr = resolution.indexOf("#");
+                    if (substr==-1 && myResolution[0]!=0 && myResolution[1]!=0){
+                        stillComment=false;
+                        break;
+                    }
+                    else if (substr==-1 && resolution.matches(".*\\d+.*")){
+                        String[] values = resolution.split("\\s+");
+                        int value=0;
+                        for (int j=0; j<values.length; j++){
+                            try {
+                                value=Integer.parseInt(values[j]);
+                              } catch (NumberFormatException e) {
+                                //
+                              }
+                        }
+                        if (value!=0){
+                            myResolution[i++]=value;
+                            stillComment=false;
+                            resolution=myResolution[0]+" "+myResolution[1];
+                            break;
+                        }
+                    }
+                    String chkchk = resolution.substring(0, substr);
+                    String[] values = chkchk.split("\\s+");
+                    try {
+                        myResolution[i++]=Integer.parseInt(values[0]);
+                      } catch (NumberFormatException e) {
+                        i--;
+                      }
+                    newLines++;
+                    resolution = br.readLine();
+                } else {
+                    stillComment=false;
+                    break;
+                }
+            }
+        }
+        else{
+            resolution=comment;
+        }
+        String max="";
+        String max2;
+        boolean isMax=false;
+        while (!isMax){
+            max2=br.readLine();
+            if (max2.isEmpty()){
+
+            }
+            else if (max2.matches(".*\\d+.*")){
+                isMax=true;
+                scale = 255.0 / ((double)Integer.parseInt(max2.trim()));
                 break;
             }
         }
-        String max = br.readLine().trim();
-        scale = (Integer.parseInt(max)) / 255;
         String[] values = resolution.split(" ");
         width = Integer.parseInt(values[0]);
         height = Integer.parseInt(values[1]);
         numberOfBytes = Integer.parseInt(values[0]) * Integer.parseInt(values[1]);
+        wri = new WritableImage((int) width, (int) height);
+        pwr = wri.getPixelWriter();
         if (headerType.equals("P3")) {
-            image = loadPPMP3FileNewLine(br);
+            loadPPMP3FileNewLine();
         }
         if (headerType.equals("P6")) {
-            image = loadPPMP6File(br);
+            loadPPMP6File();
         }
-        return image;
+        return wri;
     }
 
-    public static Image loadPPMP3FileNewLine(BufferedReader br) throws FileNotFoundException, IOException {
-        WritableImage image = new WritableImage((int) width, (int) height);
-        PixelWriter pixelWriter = image.getPixelWriter();
-        br.mark(100);
+    public static void loadPPMP3FileNewLine() throws FileNotFoundException, IOException {
         boolean test = true;
         int channel = 0;
         int r = 0;
         int g = 0;
         int b = 0;
-        int y = 0;
-        int x = 0;
         while (test) {
             Color color;
             String bla = br.readLine();
+            if (x==width && y==height){
+                break;
+            }
             if (bla == null) {
                 test = false;
                 break;
             }
+            else if (bla.isEmpty() || bla.startsWith("#")){
+                continue;
+            }
             if (bla.length() > String.valueOf(scale).length()) {
-                image = (WritableImage) loadPPMP3SpaceFile(br, pixelWriter, image);
-                return image;
+                mess = bla;
+                loadPPMP3SpaceFile();
+                if (x==height && y==width)
+                    break;
+                else {
+                    continue;
+                }
             }
             int next = Integer.parseInt(bla);
             switch (channel) {
                 case 0:
-                    r = next;
+                    r = (int)(next*scale);
                     break;
                 case 1:
-                    g = next;
+                    g = (int)(next*scale);
                     break;
                 case 2:
-                    b = next;
+                    b = (int)(next*scale);
                     break;
             }
             channel = (channel + 1) % 3;
@@ -106,46 +177,58 @@ public class LoadFiles {
                 r = 0;
                 g = 0;
                 b = 0;
-                pixelWriter.setColor(x++, y, color);
-                if (x == height) {
+                pwr.setColor(x++, y, color);
+                if (x == width) {
                     x = 0;
                     y++;
                 }
             }
         }
-        return image;
+        return;
     }
 
-    public static Image loadPPMP3SpaceFile(BufferedReader br, PixelWriter pw, WritableImage wi) throws IOException {
-        br.reset();
-        int x = 0;
-        int y = 0;
+    public static void loadPPMP3SpaceFile() throws IOException {
         int r = 0;
         int g = 0;
         int b = 0;
         int channel = 0;
         boolean exists = true;
         while (exists) {
+            //br.reset();
             Color color;
-            String test = br.readLine();
+            String test;
+            if (mess!=null){
+                test=mess;
+            }
+            else return;
             if (test == null) {
                 exists = false;
                 break;
             }
-            String[] values = test.split(" ");
+            else if (test.isEmpty() || test.startsWith("#")){
+                continue;
+            }
+            else if (test.contains("#")){
+                test = test.substring(0, test.indexOf("#"));
+                if (test.contains("\t")){
+                    test=test.replace("\t", " ");
+                }
+            }
+            test = test.replaceFirst("^\\s*", "");
+            String[] values = test.split("\\s+");
             int[] intValues = Arrays.asList(values).stream().mapToInt(Integer::parseInt).toArray();
-            if (intValues.length == (width * 3)) {
+            if (intValues.length == (width * 3) || intValues.length==3) {
                 for (int i = 0; i < intValues.length; i++) {
                     int next = intValues[i];
                     switch (channel) {
                         case 0:
-                            r = next;
+                            r = (int)(next*scale);
                             break;
                         case 1:
-                            g = next;
+                            g = (int)(next*scale);
                             break;
                         case 2:
-                            b = next;
+                            b = (int)(next*scale);
                             break;
                     }
                     channel = (channel + 1) % 3;
@@ -154,7 +237,7 @@ public class LoadFiles {
                         r = 0;
                         g = 0;
                         b = 0;
-                        pw.setColor(x++, y, color);
+                        pwr.setColor(x++, y, color);
                         if (x == width) {
                             x = 0;
                             y++;
@@ -162,11 +245,12 @@ public class LoadFiles {
                     }
                 }
             }
+            mess=null;
         }
-        return wi;
+        return;
     }
 
-    public static Image loadPPMP6File(BufferedReader br) throws IOException {
+    public static void loadPPMP6File() throws IOException {
         byte[] bytes = Files.readAllBytes(myFile.toPath());
         int countLines=0;
         boolean test = true;
@@ -191,6 +275,6 @@ public class LoadFiles {
                 }
             }
         }
-        return null;
+        return;
     }
 }
