@@ -49,9 +49,9 @@
                            </children>
                         </VBox>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                          <content>
-                              <ImageView fx:id="myImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                          </content>
+                           <content>
+                              <Canvas fx:id="myImage" height="200.0" width="200.0" />
+                           </content>
                         </ScrollPane>
                      </items>
                   </SplitPane>

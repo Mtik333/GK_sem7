@@ -8,7 +8,6 @@ package controllers;
 import data.DataAccessor;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,9 +28,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -59,7 +59,7 @@ import shapes.*;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
-    private ImageView myImage;
+    private Canvas myImage;
     @FXML
     private Pane solver;
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
@@ -89,7 +89,7 @@ public class FXMLDocumentController implements Initializable {
         if (file != null) {
 
             Image image = LoadFiles.fetchHeader(file);
-            if (image==null){
+            if (image == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setContentText(DataAccessor.getFetchError());
@@ -97,11 +97,11 @@ public class FXMLDocumentController implements Initializable {
                 DataAccessor.setFetchError(null);
                 return;
             }
-            myImage.setFitHeight(LoadFiles.height);
-            myImage.setFitWidth(LoadFiles.width);
-            myImage.setImage(image);
+            myImage.setHeight(LoadFiles.height);
+            myImage.setWidth(LoadFiles.width);
+            myImage.getGraphicsContext2D().drawImage(image, 0, 0);
 
-            BufferedImage bimage = new BufferedImage((int)image.getWidth(), (int)image.getHeight(), BufferedImage.OPAQUE);
+            BufferedImage bimage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.OPAQUE);
             // Draw the image on to the buffered image
             Graphics2D bGr = bimage.createGraphics();
             bGr.drawImage(bimage, 0, 0, null);
@@ -113,7 +113,7 @@ public class FXMLDocumentController implements Initializable {
 //            ImageInputStream iis = ImageIO.createImageInputStream(file);
 //            reader.setInput(iis, false, false);
 //            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
-            
+
         }
     }
 
@@ -137,9 +137,10 @@ public class FXMLDocumentController implements Initializable {
             DataAccessor.setImageMetadata(reader.getImageMetadata(0));
             DataAccessor.setImage(src);
             //BufferedImage image = ImageIO.read(file);
-            myImage.setFitHeight(src.getHeight());
-            myImage.setFitWidth(src.getWidth());
-            myImage.setImage(SwingFXUtils.toFXImage(src, null));
+            Image image = new Image(new FileInputStream(file.getAbsoluteFile()));
+            myImage.setHeight(LoadFiles.height);
+            myImage.setWidth(LoadFiles.width);
+            myImage.getGraphicsContext2D().drawImage(image, 0, 0);
 
         }
     }
@@ -152,8 +153,13 @@ public class FXMLDocumentController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG/JPEG images", "*.jpg")
         );
         File file1 = fileChooser1.showSaveDialog(solver.getScene().getWindow());
-        if (file1 != null && myImage.getImage() != null) {
+        if (file1 != null) {
             showFXML("/fxmls/ImageQualityFXML.fxml", "Image quality");
+            WritableImage wi = new WritableImage((int) myImage.getWidth(), (int) myImage.getHeight());
+            myImage.snapshot(null, wi);
+            BufferedImage copyImg = SwingFXUtils.fromFXImage(wi, null);
+            BufferedImage image = new BufferedImage(copyImg.getWidth(), copyImg.getHeight(), BufferedImage.TYPE_INT_RGB);
+            image.getGraphics().drawImage(copyImg, 0, 0, null);
             Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
             ImageWriter writer = (ImageWriter) iter.next();
             ImageWriteParam iwp = writer.getDefaultWriteParam();
@@ -161,8 +167,8 @@ public class FXMLDocumentController implements Initializable {
             iwp.setCompressionQuality(DataAccessor.getJpegQuality());
             FileImageOutputStream output = new FileImageOutputStream(file1);
             writer.setOutput(output);
-            IIOImage image = new IIOImage((RenderedImage) DataAccessor.getImage(), null, DataAccessor.getImageMetadata());
-            writer.write(null, image, iwp);
+            IIOImage image2 = new IIOImage(image, null, DataAccessor.getImageMetadata());
+            writer.write(null, image2, iwp);
             writer.dispose();
         }
     }
