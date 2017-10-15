@@ -29,6 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -88,22 +89,31 @@ public class FXMLDocumentController implements Initializable {
         if (file != null) {
 
             Image image = LoadFiles.fetchHeader(file);
+            if (image==null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText(DataAccessor.getFetchError());
+                alert.showAndWait();
+                DataAccessor.setFetchError(null);
+                return;
+            }
             myImage.setFitHeight(LoadFiles.height);
             myImage.setFitWidth(LoadFiles.width);
             myImage.setImage(image);
 
-            BufferedImage bimage = new BufferedImage((int)image.getWidth(), (int)image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage bimage = new BufferedImage((int)image.getWidth(), (int)image.getHeight(), BufferedImage.OPAQUE);
             // Draw the image on to the buffered image
             Graphics2D bGr = bimage.createGraphics();
             bGr.drawImage(bimage, 0, 0, null);
             bGr.dispose();
             DataAccessor.setImage(bimage);
+//            
+//            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/bmp");
+//            ImageReader reader = it.next();
+//            ImageInputStream iis = ImageIO.createImageInputStream(file);
+//            reader.setInput(iis, false, false);
+//            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
             
-            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/bmp");
-            ImageReader reader = it.next();
-            ImageInputStream iis = ImageIO.createImageInputStream(file);
-            reader.setInput(iis, false, false);
-            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
         }
     }
 
@@ -130,7 +140,6 @@ public class FXMLDocumentController implements Initializable {
             myImage.setFitHeight(src.getHeight());
             myImage.setFitWidth(src.getWidth());
             myImage.setImage(SwingFXUtils.toFXImage(src, null));
-            //}
 
         }
     }
@@ -145,7 +154,7 @@ public class FXMLDocumentController implements Initializable {
         File file1 = fileChooser1.showSaveDialog(solver.getScene().getWindow());
         if (file1 != null && myImage.getImage() != null) {
             showFXML("/fxmls/ImageQualityFXML.fxml", "Image quality");
-            Iterator iter = ImageIO.getImageWritersByMIMEType("image/jpeg");
+            Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
             ImageWriter writer = (ImageWriter) iter.next();
             ImageWriteParam iwp = writer.getDefaultWriteParam();
             iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);

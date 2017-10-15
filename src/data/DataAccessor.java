@@ -26,6 +26,15 @@ public class DataAccessor {
     private static Shape drawnShape;
     private static float jpegQuality=1f;
     private static BufferedImage image;
+    private static String fetchError;
+
+    public static String getFetchError() {
+        return fetchError;
+    }
+
+    public static void setFetchError(String fetchError) {
+        DataAccessor.fetchError = fetchError;
+    }
 
     public static BufferedImage getImage() {
         return image;

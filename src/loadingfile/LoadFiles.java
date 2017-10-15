@@ -5,6 +5,7 @@
  */
 package loadingfile;
 
+import data.DataAccessor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -136,6 +137,9 @@ public class LoadFiles {
         if (headerType.equals("P6")) {
             loadPPMP6File();
         }
+        if (DataAccessor.getFetchError()!=null){
+            return null;
+        }
         return wri;
     }
 
@@ -152,6 +156,12 @@ public class LoadFiles {
                 break;
             }
             if (bla == null) {
+                if (y==height){
+                    break;
+                }
+                else {
+                    DataAccessor.setFetchError("Amount of data not matching resolution");
+                }
                 test = false;
                 break;
             }
@@ -161,6 +171,9 @@ public class LoadFiles {
             if (bla.length() > String.valueOf(scale).length()) {
                 mess = bla;
                 loadPPMP3SpaceFile();
+                if (DataAccessor.getFetchError()!=null){
+                    return;
+                }
                 if (x==height && y==width)
                     break;
                 else {
@@ -178,6 +191,10 @@ public class LoadFiles {
                 case 2:
                     b = (int)(next*scale);
                     break;
+            }
+            if (r>255 || g>255 || b>255){
+                DataAccessor.setFetchError("Maximum value exceeded");
+                return;
             }
             channel = (channel + 1) % 3;
             if (channel == 0) {
@@ -210,6 +227,12 @@ public class LoadFiles {
             }
             else return;
             if (test == null) {
+                if (y==height){
+                    break;
+                }
+                else {
+                    DataAccessor.setFetchError("Amount of data not matching resolution");
+                }
                 exists = false;
                 break;
             }
@@ -238,6 +261,10 @@ public class LoadFiles {
                         case 2:
                             b = (int)(next*scale);
                             break;
+                    }
+                    if (r>255 || g>255 || b>255){
+                        DataAccessor.setFetchError("Maximum value exceeded");
+                        return;
                     }
                     channel = (channel + 1) % 3;
                     if (channel == 0) {
@@ -283,6 +310,10 @@ public class LoadFiles {
                         if (height * width * 6 == bytes.length-z && scale > 1) {
                             step = 6;
                         }
+                        else if (height * width * 3 != bytes.length-z){
+                            DataAccessor.setFetchError("Amount of data not matching resolution");
+                            return;
+                        }
                         else step=3;
                     }
                     afterHeader=true;
@@ -303,6 +334,10 @@ public class LoadFiles {
                         case 2:
                             b = (int)(value*scale);
                             break;
+                    }
+                    if (r>255 || g>255 || b>255){
+                        DataAccessor.setFetchError("Maximum value exceeded");
+                        return;
                     }
                     value=0;
                     channel = (channel + 1) % 3;

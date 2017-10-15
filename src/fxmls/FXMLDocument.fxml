@@ -48,10 +48,11 @@
                               <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Save as JPEG file" textAlignment="CENTER" wrapText="true" />
                            </children>
                         </VBox>
-                        <Pane>
-                           <children>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                          <content>
                               <ImageView fx:id="myImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                           </children></Pane>
+                          </content>
+                        </ScrollPane>
                      </items>
                   </SplitPane>
                </content>
