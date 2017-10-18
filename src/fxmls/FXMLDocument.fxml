@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
@@ -51,6 +52,38 @@
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
                            <content>
                               <Canvas fx:id="myImage" height="200.0" width="200.0" />
+                           </content>
+                        </ScrollPane>
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
+            <Tab text="Task 3">
+               <content>
+                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                     <items>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#loadPPMFile" prefWidth="100.0" text="Set RGB values" textAlignment="CENTER" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadJPEGFile" prefWidth="100.0" text="Set CMYK values" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Save as JPEG file" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                        <ScrollPane>
+                           <content>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                                    <Label text="R:" />
+                                    <Label text="G:" />
+                                    <Label text="B:" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                                    <Label layoutX="10.0" layoutY="110.0" text="C:" />
+                                    <Label layoutX="10.0" layoutY="127.0" text="M:" />
+                                    <Label layoutX="10.0" layoutY="144.0" text="Y;" />
+                                    <Label layoutX="10.0" layoutY="144.0" text="K:" />
+                                 </children>
+                              </VBox>
                            </content>
                         </ScrollPane>
                      </items>

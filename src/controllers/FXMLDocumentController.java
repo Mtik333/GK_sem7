@@ -49,6 +49,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
+import loadingfile.Convertion;
 import loadingfile.LoadFiles;
 import shapes.*;
 
@@ -75,6 +76,7 @@ public class FXMLDocumentController implements Initializable {
         // TODO
         DataAccessor.setShapes(new ArrayList<>());
         DataAccessor.setMapping(new HashMap<>());
+        Convertion.convertToRGB();
     }
 
     @FXML

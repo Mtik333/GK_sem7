@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
@@ -51,6 +52,30 @@
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
                            <content>
                               <Canvas fx:id="myImage" height="200.0" width="200.0" />
+                           </content>
+                        </ScrollPane>
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
+            <Tab text="Task 3">
+               <content>
+                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                     <items>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#loadPPMFile" prefWidth="100.0" text="Load PPM file" textAlignment="CENTER" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadJPEGFile" prefWidth="100.0" text="Load JPEG file" textAlignment="CENTER" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Save as JPEG file" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <Box depth="255.0" height="255.0" rotate="26.6" width="255.0">
+                                 <rotationAxis>
+                                    <Point3D x="0.5" y="0.5" z="0.5" />
+                                 </rotationAxis>
+                              </Box>
                            </content>
                         </ScrollPane>
                      </items>
