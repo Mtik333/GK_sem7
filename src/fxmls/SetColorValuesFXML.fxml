@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers.SetColorValuesFXMLController">
+   <children>
+      <VBox>
+         <children>
+            <HBox layoutX="15.0" layoutY="15.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Label prefHeight="40.0" text="Set color (RGB: 0-255, CMYK: 0-100)" textAlignment="CENTER" />
+                  <Pane HBox.hgrow="ALWAYS" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="50.0">
+               <children>
+                  <Label fx:id="rcLabel" prefHeight="40.0" prefWidth="180.0" text="R:" />
+                  <TextField fx:id="rcText" prefHeight="40.0" prefWidth="220.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="15.0" layoutY="115.0">
+               <children>
+                  <Label fx:id="gmLabel" prefHeight="40.0" prefWidth="180.0" text="G:" />
+                  <TextField fx:id="gmText" prefHeight="40.0" prefWidth="220.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="circleBox" layoutX="10.0" layoutY="160.0">
+               <children>
+                  <Label fx:id="byLabel" prefHeight="40.0" prefWidth="180.0" text="B:" />
+                  <TextField fx:id="byText" prefHeight="40.0" prefWidth="220.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="lengthBox" layoutX="10.0" layoutY="160.0">
+               <children>
+                  <Label fx:id="kLabel" prefHeight="40.0" prefWidth="180.0" text="K:" />
+                  <TextField fx:id="kText" prefHeight="40.0" prefWidth="220.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox>
+               <children>
+                  <Pane layoutX="90.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#convertValues" prefHeight="25.0" prefWidth="70.0" text="OK">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Pane HBox.hgrow="ALWAYS" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

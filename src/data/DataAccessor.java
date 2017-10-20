@@ -6,6 +6,7 @@
 package data;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.shape.Shape;
@@ -27,6 +28,33 @@ public class DataAccessor {
     private static float jpegQuality=1f;
     private static BufferedImage image;
     private static String fetchError;
+    public static Map<String,Integer> rgbValues = new HashMap<>(3);
+    public static Map<String,Integer> cmykValues = new HashMap<>(4);
+    public static boolean ifRGB=true;
+
+    public static Map<String, Integer> getRgbValues() {
+        return rgbValues;
+    }
+
+    public static void setRgbValues(Map<String, Integer> rgbValues) {
+        DataAccessor.rgbValues = rgbValues;
+    }
+
+    public static Map<String, Integer> getCmykValues() {
+        return cmykValues;
+    }
+
+    public static void setCmykValues(Map<String, Integer> cmykValues) {
+        DataAccessor.cmykValues = cmykValues;
+    }
+
+    public static boolean isIfRGB() {
+        return ifRGB;
+    }
+
+    public static void setIfRGB(boolean ifRGB) {
+        DataAccessor.ifRGB = ifRGB;
+    }
 
     public static String getFetchError() {
         return fetchError;
@@ -120,4 +148,15 @@ public class DataAccessor {
         DataAccessor.primitiveType = primitiveType;
     }
     
+    public static void initializeRGBCMYKMaps(){
+        DataAccessor.cmykValues = new HashMap<>();
+        cmykValues.put("c", 0);
+        cmykValues.put("m", 0);
+        cmykValues.put("y", 0);
+        cmykValues.put("k", 0);
+        DataAccessor.rgbValues = new HashMap<>();
+        rgbValues.put("r", 255);
+        rgbValues.put("g", 255);
+        rgbValues.put("b", 255);
+    }
 }

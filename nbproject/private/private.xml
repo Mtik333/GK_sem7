@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/loadingfile/LoadFiles.java</file>
-            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/data/DataAccessor.java</file>
-            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/controllers/FXMLDocumentController.java</file>
+            <file>file:/C:/Users/walendziukm/Documents/MW_GK_projekt/src/data/DataAccessor.java</file>
+            <file>file:/C:/Users/walendziukm/Documents/MW_GK_projekt/src/controllers/SetColorValuesFXMLController.java</file>
+            <file>file:/C:/Users/walendziukm/Documents/MW_GK_projekt/src/controllers/PrimitiveSelectFXMLController.java</file>
+            <file>file:/C:/Users/walendziukm/Documents/MW_GK_projekt/src/controllers/FXMLDocumentController.java</file>
         </group>
     </open-files>
 </project-private>

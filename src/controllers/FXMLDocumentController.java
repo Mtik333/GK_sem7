@@ -30,11 +30,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -60,9 +62,29 @@ import shapes.*;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
+    private Label rLabel;
+    @FXML
+    private Label gLabel;
+    @FXML
+    private Label bLabel;
+    @FXML
+    private Label cLabel;
+    @FXML
+    private Label mLabel;
+    @FXML
+    private Label yLabel;
+    @FXML
+    private Label kLabel;
+
+    @FXML
     private Canvas myImage;
     @FXML
     private Pane solver;
+    @FXML
+    private Rectangle rgbRectangle;
+    @FXML
+    private Rectangle cmykRectangle;
+    
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
 
@@ -76,9 +98,42 @@ public class FXMLDocumentController implements Initializable {
         // TODO
         DataAccessor.setShapes(new ArrayList<>());
         DataAccessor.setMapping(new HashMap<>());
+        DataAccessor.initializeRGBCMYKMaps();
         Convertion.convertToRGB();
+        setValuesForLabels();
+        rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
+        cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
     }
 
+    @FXML
+    private void changeColorRGB(){
+        DataAccessor.setIfRGB(true);
+        showFXML("/fxmls/SetColorValuesFXML.fxml", "Set color");
+        rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
+        cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
+        setValuesForLabels();
+    }
+    
+    @FXML
+    private void changeColorCMYK(){
+        DataAccessor.setIfRGB(false);
+        showFXML("/fxmls/SetColorValuesFXML.fxml", "Set color");
+        rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
+        cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
+        setValuesForLabels();
+    }
+    
+    @FXML
+    private void setValuesForLabels(){
+        rLabel.setText("R: "+String.valueOf(DataAccessor.getRgbValues().get("r")));
+        gLabel.setText("G: "+String.valueOf(DataAccessor.getRgbValues().get("g")));
+        bLabel.setText("B: "+String.valueOf(DataAccessor.getRgbValues().get("b")));
+        cLabel.setText("C: "+String.valueOf(DataAccessor.getCmykValues().get("c")));
+        mLabel.setText("M: "+String.valueOf(DataAccessor.getCmykValues().get("m")));
+        yLabel.setText("Y: "+String.valueOf(DataAccessor.getCmykValues().get("y")));
+        kLabel.setText("K: "+String.valueOf(DataAccessor.getCmykValues().get("k")));
+    }
+    
     @FXML
     private void loadPPMFile() throws IOException {
         FileChooser fileChooser = new FileChooser();
@@ -174,7 +229,7 @@ public class FXMLDocumentController implements Initializable {
             writer.dispose();
         }
     }
-
+    
     @FXML
     private void createPrimitiveCustom() {
         showFXML("/fxmls/PrimitiveSelectFXML.fxml", "Draw primitive");
