@@ -18,22 +18,25 @@ import javax.imageio.ImageIO;
  * @author Mateusz
  */
 public class HueCircle {
-    
-     public static int RGBtoHEX(Color color) {
+
+    public static int RGBtoHEX(Color color) {
         String hex = Integer.toHexString(color.getRGB() & 0xffffff);
         if (hex.length() < 6) {
-            if (hex.length() == 5)
+            if (hex.length() == 5) {
                 hex = "0" + hex;
-            if (hex.length() == 4)
+            }
+            if (hex.length() == 4) {
                 hex = "00" + hex;
-            if (hex.length() == 3)
+            }
+            if (hex.length() == 3) {
                 hex = "000" + hex;
+            }
         }
         hex = "#" + hex;
         return Integer.decode(hex);
     }
-     
-    public static Image test(){
+
+    public static Image test() {
         int rad = 255;
         BufferedImage img = new BufferedImage(rad, rad, BufferedImage.TYPE_INT_RGB);
 
@@ -97,7 +100,7 @@ public class HueCircle {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Image imgData = SwingFXUtils.toFXImage(img, null );  
+        Image imgData = SwingFXUtils.toFXImage(img, null);
         return imgData;
     }
 }

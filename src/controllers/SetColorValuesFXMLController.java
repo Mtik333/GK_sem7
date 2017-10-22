@@ -42,10 +42,10 @@ public class SetColorValuesFXMLController implements Initializable {
     public TextField byText;
     @FXML
     public TextField kText;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (DataAccessor.isIfRGB()){
+        if (DataAccessor.isIfRGB()) {
             rcLabel.setText("R:");
             gmLabel.setText("G:");
             byLabel.setText("B:");
@@ -54,8 +54,7 @@ public class SetColorValuesFXMLController implements Initializable {
             gmText.setText(String.valueOf(DataAccessor.getRgbValues().get("g")));
             byText.setText(String.valueOf(DataAccessor.getRgbValues().get("b")));
             kLabel.setDisable(true);
-        }
-        else {
+        } else {
             rcLabel.setText("C:");
             gmLabel.setText("M:");
             byLabel.setText("Y:");
@@ -68,16 +67,14 @@ public class SetColorValuesFXMLController implements Initializable {
         }
     }
 
-    
     @FXML
-    public void convertValues(ActionEvent event){
-        if (DataAccessor.isIfRGB()){
+    public void convertValues(ActionEvent event) {
+        if (DataAccessor.isIfRGB()) {
             DataAccessor.getRgbValues().replace("r", Integer.valueOf(rcText.getText()));
             DataAccessor.getRgbValues().replace("g", Integer.valueOf(gmText.getText()));
             DataAccessor.getRgbValues().replace("b", Integer.valueOf(byText.getText()));
             Convertion.convertToCMYK();
-        }
-        else{
+        } else {
             DataAccessor.getCmykValues().replace("c", Integer.valueOf(rcText.getText()));
             DataAccessor.getCmykValues().replace("m", Integer.valueOf(gmText.getText()));
             DataAccessor.getCmykValues().replace("y", Integer.valueOf(byText.getText()));
@@ -87,7 +84,7 @@ public class SetColorValuesFXMLController implements Initializable {
         Stage stage = (Stage) rcText.getScene().getWindow();
         stage.close();
     }
-    
+
     @FXML
     public void dismiss(ActionEvent event) {
         Stage stage = (Stage) rcText.getScene().getWindow();

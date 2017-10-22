@@ -26,22 +26,23 @@ public class ImageQualityFXMLController implements Initializable {
      */
     @FXML
     public ComboBox qualityChoose;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         qualityChoose.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         qualityChoose.getSelectionModel().select(0);
-    }    
-    
+    }
+
     @FXML
-    public void setQuality(ActionEvent event){
+    public void setQuality(ActionEvent event) {
         int value = Integer.parseInt((String) qualityChoose.getSelectionModel().getSelectedItem());
-        float myValue = ((float)value/10);
+        float myValue = ((float) value / 10);
         DataAccessor.setJpegQuality(myValue);
         Stage stage = (Stage) qualityChoose.getScene().getWindow();
         stage.close();
     }
-    
+
     @FXML
     public void dismiss(ActionEvent event) {
         Stage stage = (Stage) qualityChoose.getScene().getWindow();

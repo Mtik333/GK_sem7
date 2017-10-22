@@ -26,7 +26,7 @@ public class HSVConeController implements Initializable {
      */
     @FXML
     private AnchorPane anchorPane;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -35,6 +35,6 @@ public class HSVConeController implements Initializable {
         circle.setTranslateX(255);
         circle.setTranslateY(255);
         anchorPane.getChildren().add(circle);
-    }    
-    
+    }
+
 }

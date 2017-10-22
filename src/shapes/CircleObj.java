@@ -9,20 +9,21 @@ package shapes;
  *
  * @author Mateusz
  */
-public class CircleObj extends ShapeObj{
+public class CircleObj extends ShapeObj {
+
     private double radius;
 
-    public CircleObj(double x, double y){
-        this.xCoord=x;
-        this.yCoord=y;
+    public CircleObj(double x, double y) {
+        this.xCoord = x;
+        this.yCoord = y;
     }
-    
-    public CircleObj(double x, double y, double radius){
-        this.xCoord=x;
-        this.yCoord=y;
-        this.radius=radius;
+
+    public CircleObj(double x, double y, double radius) {
+        this.xCoord = x;
+        this.yCoord = y;
+        this.radius = radius;
     }
-    
+
     public double getRadius() {
         return radius;
     }
@@ -33,7 +34,7 @@ public class CircleObj extends ShapeObj{
 
     @Override
     public ShapeObj returnShape(double x, double y) {
-        return new CircleObj(x,y);
+        return new CircleObj(x, y);
     }
-    
+
 }

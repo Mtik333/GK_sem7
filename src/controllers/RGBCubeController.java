@@ -28,7 +28,7 @@ public class RGBCubeController implements Initializable {
      * Initializes the controller class.
      */
     private double mouseOldX, mouseOldY, mousePosX, mousePosY, mouseDeltaX, mouseDeltaY;
-    
+
     @FXML
     private AnchorPane anchorPane;
     private Scene scene;
@@ -53,23 +53,19 @@ public class RGBCubeController implements Initializable {
                 mouseDeltaY = mousePosY - mouseOldY;
                 if (me.isAltDown() && me.isShiftDown() && me.isPrimaryButtonDown()) {
                     rotateCube.rz.setAngle(rotateCube.rz.getAngle() - mouseDeltaX);
-                }
-                else if (me.isAltDown() && me.isPrimaryButtonDown()) {
+                } else if (me.isAltDown() && me.isPrimaryButtonDown()) {
                     rotateCube.ry.setAngle(rotateCube.ry.getAngle() - mouseDeltaX);
                     rotateCube.rx.setAngle(rotateCube.rx.getAngle() + mouseDeltaY);
-                }
-                else if (me.isAltDown() && me.isSecondaryButtonDown()) {
+                } else if (me.isAltDown() && me.isSecondaryButtonDown()) {
                     double scale = rotateCube.s.getX();
-                    double newScale = scale + mouseDeltaX*0.01;
-                    rotateCube.s.setX(newScale); rotateCube.s.setY(newScale); rotateCube.s.setZ(newScale);
-                }
-                else if (me.isAltDown() && me.isMiddleButtonDown()) {
-                    rotateCube.t.setX(rotateCube.t.getX() + mouseDeltaX);
-                    rotateCube.t.setY(rotateCube.t.getY() + mouseDeltaY);
+                    double newScale = scale + mouseDeltaX * 0.01;
+                    rotateCube.s.setX(newScale);
+                    rotateCube.s.setY(newScale);
+                    rotateCube.s.setZ(newScale);
                 }
             }
         });
-        
+
     }
 
 }

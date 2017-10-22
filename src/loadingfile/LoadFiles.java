@@ -30,101 +30,98 @@ public class LoadFiles {
     public static int height;
     public static double scale;
     public static int numberOfBytes;
-    public static int newLines=4;
-    public static int x=0;
-    public static int y=0;
-    public static int i=0;
+    public static int newLines = 4;
+    public static int x = 0;
+    public static int y = 0;
+    public static int i = 0;
     public static String mess;
     public static PixelWriter pwr;
     public static WritableImage wri;
     public static BufferedReader br;
 
     public static Image fetchHeader(File file) throws FileNotFoundException, IOException {
-        x=0;
-        y=0;
-        i=0;
+        x = 0;
+        y = 0;
+        i = 0;
         myResolution = new int[2];
         myFile = file;
-        newLines=4;
+        newLines = 4;
         Image image = null;
         br = new BufferedReader(new FileReader(file.getPath()));
         String headerType = br.readLine();
-        if (!headerType.equals("P3") && !headerType.equals("P6")){
+        if (!headerType.equals("P3") && !headerType.equals("P6")) {
             return null;
         }
         //br.mark(100);
         String comment = br.readLine();
         String resolution;
-        if (comment.contains("#")){
+        if (comment.contains("#")) {
             boolean stillComment = true;
             resolution = br.readLine();
             while (stillComment) {
-                if (resolution.isEmpty()){
+                if (resolution.isEmpty()) {
                     resolution = br.readLine();
                     continue;
                 }
                 if (resolution.contains("#") || !resolution.isEmpty()) {
                     int substr = resolution.indexOf("#");
-                    if (substr==-1 && myResolution[0]!=0 && myResolution[1]!=0){
-                        stillComment=false;
+                    if (substr == -1 && myResolution[0] != 0 && myResolution[1] != 0) {
+                        stillComment = false;
                         break;
-                    }
-                    else if (substr==-1 && resolution.matches(".*\\d+.*")){
+                    } else if (substr == -1 && resolution.matches(".*\\d+.*")) {
                         String[] values = resolution.split("\\s+");
-                        int value=0;
-                        for (int j=0; j<values.length; j++){
+                        int value = 0;
+                        for (int j = 0; j < values.length; j++) {
                             try {
-                                value=Integer.parseInt(values[j]);
-                                myResolution[i++]=value;
-                              } catch (NumberFormatException e) {
+                                value = Integer.parseInt(values[j]);
+                                myResolution[i++] = value;
+                            } catch (NumberFormatException e) {
                                 //
-                              }
+                            }
                         }
-                        if (value!=0){
+                        if (value != 0) {
                             //myResolution[i++]=value;
-                            stillComment=false;
-                            resolution=myResolution[0]+" "+myResolution[1];
+                            stillComment = false;
+                            resolution = myResolution[0] + " " + myResolution[1];
                             break;
                         }
                     }
                     String chkchk = resolution.substring(0, substr);
                     String[] values = chkchk.split("\\s+");
                     try {
-                        myResolution[i++]=Integer.parseInt(values[0]);
-                      } catch (NumberFormatException e) {
+                        myResolution[i++] = Integer.parseInt(values[0]);
+                    } catch (NumberFormatException e) {
                         i--;
-                      }
+                    }
                     newLines++;
                     resolution = br.readLine();
                 } else {
-                    stillComment=false;
+                    stillComment = false;
                     break;
                 }
             }
-        }
-        else{
+        } else {
             newLines--;
-            resolution=comment;
+            resolution = comment;
         }
-        String max="";
+        String max = "";
         String max2;
-        boolean isMax=false;
-        while (!isMax){
-            max2=br.readLine();
-            if (max2.isEmpty()){
+        boolean isMax = false;
+        while (!isMax) {
+            max2 = br.readLine();
+            if (max2.isEmpty()) {
 
-            }
-            else if (max2.matches(".*\\d+.*")){
-                isMax=true;
-                if (max2.contains("#")){
-                    max2=max2.substring(0,max2.indexOf("#"));
-                    max2=max2.replace("\t", "");
-                    max2=max2.replace("\\s","");
+            } else if (max2.matches(".*\\d+.*")) {
+                isMax = true;
+                if (max2.contains("#")) {
+                    max2 = max2.substring(0, max2.indexOf("#"));
+                    max2 = max2.replace("\t", "");
+                    max2 = max2.replace("\\s", "");
                 }
-                scale = 255.0 / ((double)Integer.parseInt(max2.trim()));
+                scale = 255.0 / ((double) Integer.parseInt(max2.trim()));
                 break;
             }
-        }        
+        }
         String[] values = resolution.split(" ");
         width = Integer.parseInt(values[0]);
         height = Integer.parseInt(values[1]);
@@ -137,7 +134,7 @@ public class LoadFiles {
         if (headerType.equals("P6")) {
             loadPPMP6File();
         }
-        if (DataAccessor.getFetchError()!=null){
+        if (DataAccessor.getFetchError() != null) {
             return null;
         }
         return wri;
@@ -152,47 +149,45 @@ public class LoadFiles {
         while (test) {
             Color color;
             String bla = br.readLine();
-            if (x==width && y==height){
+            if (x == width && y == height) {
                 break;
             }
             if (bla == null) {
-                if (y==height){
+                if (y == height) {
                     break;
-                }
-                else {
+                } else {
                     DataAccessor.setFetchError("Amount of data not matching resolution");
                 }
                 test = false;
                 break;
-            }
-            else if (bla.isEmpty() || bla.startsWith("#")){
+            } else if (bla.isEmpty() || bla.startsWith("#")) {
                 continue;
             }
             if (bla.length() > String.valueOf(scale).length()) {
                 mess = bla;
                 loadPPMP3SpaceFile();
-                if (DataAccessor.getFetchError()!=null){
+                if (DataAccessor.getFetchError() != null) {
                     return;
                 }
-                if (x==height && y==width)
+                if (x == height && y == width) {
                     break;
-                else {
+                } else {
                     continue;
                 }
             }
             int next = Integer.parseInt(bla);
             switch (channel) {
                 case 0:
-                    r = (int)(next*scale);
+                    r = (int) (next * scale);
                     break;
                 case 1:
-                    g = (int)(next*scale);
+                    g = (int) (next * scale);
                     break;
                 case 2:
-                    b = (int)(next*scale);
+                    b = (int) (next * scale);
                     break;
             }
-            if (r>255 || g>255 || b>255){
+            if (r > 255 || g > 255 || b > 255) {
                 DataAccessor.setFetchError("Maximum value exceeded");
                 return;
             }
@@ -222,47 +217,45 @@ public class LoadFiles {
             //br.reset();
             Color color;
             String test;
-            if (mess!=null){
-                test=mess;
+            if (mess != null) {
+                test = mess;
+            } else {
+                return;
             }
-            else return;
             if (test == null) {
-                if (y==height){
+                if (y == height) {
                     break;
-                }
-                else {
+                } else {
                     DataAccessor.setFetchError("Amount of data not matching resolution");
                 }
                 exists = false;
                 break;
-            }
-            else if (test.isEmpty() || test.startsWith("#")){
+            } else if (test.isEmpty() || test.startsWith("#")) {
                 continue;
-            }
-            else if (test.contains("#")){
+            } else if (test.contains("#")) {
                 test = test.substring(0, test.indexOf("#"));
-                if (test.contains("\t")){
-                    test=test.replace("\t", " ");
+                if (test.contains("\t")) {
+                    test = test.replace("\t", " ");
                 }
             }
             test = test.replaceFirst("^\\s*", "");
             String[] values = test.split("\\s+");
             int[] intValues = Arrays.asList(values).stream().mapToInt(Integer::parseInt).toArray();
-            if (intValues.length == (width * 3) || intValues.length==3) {
+            if (intValues.length == (width * 3) || intValues.length == 3) {
                 for (int i = 0; i < intValues.length; i++) {
                     int next = intValues[i];
                     switch (channel) {
                         case 0:
-                            r = (int)(next*scale);
+                            r = (int) (next * scale);
                             break;
                         case 1:
-                            g = (int)(next*scale);
+                            g = (int) (next * scale);
                             break;
                         case 2:
-                            b = (int)(next*scale);
+                            b = (int) (next * scale);
                             break;
                     }
-                    if (r>255 || g>255 || b>255){
+                    if (r > 255 || g > 255 || b > 255) {
                         DataAccessor.setFetchError("Maximum value exceeded");
                         return;
                     }
@@ -280,14 +273,14 @@ public class LoadFiles {
                     }
                 }
             }
-            mess=null;
+            mess = null;
         }
         return;
     }
 
     public static void loadPPMP6File() throws IOException {
         byte[] bytes = Files.readAllBytes(myFile.toPath());
-        int countLines=0;
+        int countLines = 0;
         boolean test = true;
         int channel = 0;
         int value = -1;
@@ -295,51 +288,49 @@ public class LoadFiles {
         int g = 0;
         int b = 0;
         int step = 0;
-        boolean afterHeader=false;
+        boolean afterHeader = false;
         Color color;
-        for (int z=0; z<bytes.length; z++){
-            if (bytes[z]==0x0a && !afterHeader){
-                if (countLines>=newLines){
+        for (int z = 0; z < bytes.length; z++) {
+            if (bytes[z] == 0x0a && !afterHeader) {
+                if (countLines >= newLines) {
                     continue;
                 }
                 countLines++;
-            }
-            else{
-                if (countLines==newLines){
-                    if (step==0){
-                        if (height * width * 6 == bytes.length-z && scale > 1) {
+            } else {
+                if (countLines == newLines) {
+                    if (step == 0) {
+                        if (height * width * 6 == bytes.length - z && scale > 1) {
                             step = 6;
-                        }
-                        else if (height * width * 3 != bytes.length-z){
+                        } else if (height * width * 3 != bytes.length - z) {
                             DataAccessor.setFetchError("Amount of data not matching resolution");
                             return;
+                        } else {
+                            step = 3;
                         }
-                        else step=3;
                     }
-                    afterHeader=true;
-                    if (step==3){
+                    afterHeader = true;
+                    if (step == 3) {
                         value = bytes[z] & 0xff;
-                    }
-                    else {
+                    } else {
                         value = bytes[z++] & 0xff;
                         value += bytes[z] & 0xff;
                     }
                     switch (channel) {
                         case 0:
-                            r = (int)(value*scale);
+                            r = (int) (value * scale);
                             break;
                         case 1:
-                            g = (int)(value*scale);
+                            g = (int) (value * scale);
                             break;
                         case 2:
-                            b = (int)(value*scale);
+                            b = (int) (value * scale);
                             break;
                     }
-                    if (r>255 || g>255 || b>255){
+                    if (r > 255 || g > 255 || b > 255) {
                         DataAccessor.setFetchError("Maximum value exceeded");
                         return;
                     }
-                    value=0;
+                    value = 0;
                     channel = (channel + 1) % 3;
                     if (channel == 0) {
                         color = Color.rgb(r, g, b);

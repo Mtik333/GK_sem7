@@ -10,21 +10,22 @@ package shapes;
  * @author Mateusz
  */
 public class RectangleObj extends ShapeObj {
+
     private double height;
     private double width;
 
-    public RectangleObj(double x, double y){
-        this.xCoord=x;
-        this.yCoord=y;
+    public RectangleObj(double x, double y) {
+        this.xCoord = x;
+        this.yCoord = y;
     }
-    
-    public RectangleObj(double x, double y, double height, double width){
-        this.xCoord=x;
-        this.yCoord=y;
-        this.height=height;
-        this.width=width;
+
+    public RectangleObj(double x, double y, double height, double width) {
+        this.xCoord = x;
+        this.yCoord = y;
+        this.height = height;
+        this.width = width;
     }
-    
+
     public double getHeight() {
         return height;
     }
@@ -43,6 +44,6 @@ public class RectangleObj extends ShapeObj {
 
     @Override
     public ShapeObj returnShape(double x, double y) {
-        return new RectangleObj(x,y);
+        return new RectangleObj(x, y);
     }
 }

@@ -50,7 +50,7 @@ public class PrimitiveSelectFXMLController implements Initializable {
     public HBox lengthBox;
     @FXML
     public HBox widthBox;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         chosenPrimitive.getItems().addAll("Line", "Rectangle", "Circle");
@@ -61,13 +61,13 @@ public class PrimitiveSelectFXMLController implements Initializable {
             }
         });
         chosenPrimitive.getSelectionModel().select(DataAccessor.getPrimitiveType());
-        
-    }    
-    
-    private void setInterfaceLook(){
+
+    }
+
+    private void setInterfaceLook() {
         circleBox.setDisable(true);
         widthBox.setDisable(true);
-        switch(chosenPrimitive.getSelectionModel().getSelectedItem().toString()){
+        switch (chosenPrimitive.getSelectionModel().getSelectedItem().toString()) {
             case "Line":
                 break;
             case "Rectangle":
@@ -80,31 +80,32 @@ public class PrimitiveSelectFXMLController implements Initializable {
                 break;
         }
     }
-    
+
     @FXML
     public void dismiss(ActionEvent event) {
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
     }
-    
+
     @FXML
-    public void drawOnCanva(ActionEvent event){
+    public void drawOnCanva(ActionEvent event) {
         DataAccessor.setPrimitiveType(chosenPrimitive.getSelectionModel().getSelectedItem().toString());
         double x = Double.valueOf(xCoordText.getText());
         double y = Double.valueOf(yCoordText.getText());
-        double length=0;
-        double radius=0;
-        double width=0;
-        if (!circleBox.isDisabled())
+        double length = 0;
+        double radius = 0;
+        double width = 0;
+        if (!circleBox.isDisabled()) {
             radius = Double.valueOf(radiusText.getText());
-        if (!lengthBox.isDisabled()){
+        }
+        if (!lengthBox.isDisabled()) {
             length = Double.valueOf(lengthText.getText());
         }
-        if (!widthBox.isDisabled()){
+        if (!widthBox.isDisabled()) {
             width = Double.valueOf(widthText.getText());
         }
         ShapeObj shape = null;
-        switch(DataAccessor.getPrimitiveType()){
+        switch (DataAccessor.getPrimitiveType()) {
             case "Line":
                 shape = new LineObj(x, y, length);
                 break;
@@ -112,7 +113,7 @@ public class PrimitiveSelectFXMLController implements Initializable {
                 shape = new RectangleObj(x, y, length, width);
                 break;
             case "Circle":
-                shape = new CircleObj(x,y,radius);
+                shape = new CircleObj(x, y, radius);
                 break;
         }
         DataAccessor.getShapes().add(shape);

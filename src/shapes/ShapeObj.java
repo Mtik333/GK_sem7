@@ -10,6 +10,7 @@ package shapes;
  * @author Mateusz
  */
 public abstract class ShapeObj {
+
     protected double xCoord;
     protected double yCoord;
 
@@ -28,6 +29,6 @@ public abstract class ShapeObj {
     public void setyCoord(double yCoord) {
         this.yCoord = yCoord;
     }
-    
+
     public abstract ShapeObj returnShape(double x, double y);
 }

@@ -92,7 +92,7 @@ public class FXMLDocumentController implements Initializable {
     private Rectangle rgbRectangle;
     @FXML
     private Rectangle cmykRectangle;
-    
+
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
 
@@ -111,49 +111,48 @@ public class FXMLDocumentController implements Initializable {
         setValuesForLabels();
         rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
-        
 
     }
 
     @FXML
-    private void createHSVCone(){
+    private void createHSVCone() {
         showFXML("/fxmls/HSVCone.fxml", "HSV cone");
     }
-    
+
     @FXML
-    private void createRGBCube(){
+    private void createRGBCube() {
         showFXML("/fxmls/RGBCube.fxml", "RGB cube");
     }
-    
+
     @FXML
-    private void changeColorRGB(){
+    private void changeColorRGB() {
         DataAccessor.setIfRGB(true);
         showFXML("/fxmls/SetColorValuesFXML.fxml", "Set color");
         rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         setValuesForLabels();
     }
-    
+
     @FXML
-    private void changeColorCMYK(){
+    private void changeColorCMYK() {
         DataAccessor.setIfRGB(false);
         showFXML("/fxmls/SetColorValuesFXML.fxml", "Set color");
         rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         setValuesForLabels();
     }
-    
+
     @FXML
-    private void setValuesForLabels(){
-        rLabel.setText("R: "+String.valueOf(DataAccessor.getRgbValues().get("r")));
-        gLabel.setText("G: "+String.valueOf(DataAccessor.getRgbValues().get("g")));
-        bLabel.setText("B: "+String.valueOf(DataAccessor.getRgbValues().get("b")));
-        cLabel.setText("C: "+String.valueOf(DataAccessor.getCmykValues().get("c")));
-        mLabel.setText("M: "+String.valueOf(DataAccessor.getCmykValues().get("m")));
-        yLabel.setText("Y: "+String.valueOf(DataAccessor.getCmykValues().get("y")));
-        kLabel.setText("K: "+String.valueOf(DataAccessor.getCmykValues().get("k")));
+    private void setValuesForLabels() {
+        rLabel.setText("R: " + String.valueOf(DataAccessor.getRgbValues().get("r")));
+        gLabel.setText("G: " + String.valueOf(DataAccessor.getRgbValues().get("g")));
+        bLabel.setText("B: " + String.valueOf(DataAccessor.getRgbValues().get("b")));
+        cLabel.setText("C: " + String.valueOf(DataAccessor.getCmykValues().get("c")));
+        mLabel.setText("M: " + String.valueOf(DataAccessor.getCmykValues().get("m")));
+        yLabel.setText("Y: " + String.valueOf(DataAccessor.getCmykValues().get("y")));
+        kLabel.setText("K: " + String.valueOf(DataAccessor.getCmykValues().get("k")));
     }
-    
+
     @FXML
     private void loadPPMFile() throws IOException {
         FileChooser fileChooser = new FileChooser();
@@ -184,7 +183,7 @@ public class FXMLDocumentController implements Initializable {
             bGr.drawImage(bimage, 0, 0, null);
             bGr.dispose();
             DataAccessor.setImage(bimage);
-//            
+//
 //            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/bmp");
 //            ImageReader reader = it.next();
 //            ImageInputStream iis = ImageIO.createImageInputStream(file);
@@ -249,7 +248,7 @@ public class FXMLDocumentController implements Initializable {
             writer.dispose();
         }
     }
-    
+
     @FXML
     private void createPrimitiveCustom() {
         showFXML("/fxmls/PrimitiveSelectFXML.fxml", "Draw primitive");
@@ -386,7 +385,5 @@ public class FXMLDocumentController implements Initializable {
                 ((Shape) t.getSource()).setTranslateX(0);
                 ((Shape) t.getSource()).setTranslateY(0);
             };
-    
-   
-    
+
 }

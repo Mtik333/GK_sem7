@@ -17,11 +17,11 @@ import javafx.stage.Stage;
  * @author Mateusz
  */
 public class MW_GK_projekt extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxmls/FXMLDocument.fxml"));
-        
+
         Scene scene = new Scene(root);
         DataAccessor.setPrimaryStage(stage);
         stage.setScene(scene);
@@ -35,5 +35,5 @@ public class MW_GK_projekt extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

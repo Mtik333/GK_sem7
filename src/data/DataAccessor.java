@@ -19,18 +19,19 @@ import shapes.ShapeObj;
  * @author Mateusz
  */
 public class DataAccessor {
-    private static String primitiveType="Line";
+
+    private static String primitiveType = "Line";
     private static Stage primaryStage; //widok UI
     private static List<ShapeObj> shapes;
     private static Map<ShapeObj, Shape> mapping;
     private static ShapeObj analyzedPrimitive;
     private static Shape drawnShape;
-    private static float jpegQuality=1f;
+    private static float jpegQuality = 1f;
     private static BufferedImage image;
     private static String fetchError;
-    public static Map<String,Integer> rgbValues = new HashMap<>(3);
-    public static Map<String,Integer> cmykValues = new HashMap<>(4);
-    public static boolean ifRGB=true;
+    public static Map<String, Integer> rgbValues = new HashMap<>(3);
+    public static Map<String, Integer> cmykValues = new HashMap<>(4);
+    public static boolean ifRGB = true;
 
     public static Map<String, Integer> getRgbValues() {
         return rgbValues;
@@ -95,10 +96,11 @@ public class DataAccessor {
 
     public static void setDrawnShape(Shape drawnShape) {
         DataAccessor.drawnShape = drawnShape;
-        if (drawnShape!=null)
+        if (drawnShape != null) {
             drawnShape.setDisable(false);
+        }
     }
-    private static boolean draw=false;
+    private static boolean draw = false;
 
     public static List<ShapeObj> getShapes() {
         return shapes;
@@ -131,7 +133,7 @@ public class DataAccessor {
     public static void setAnalyzedPrimitive(ShapeObj analyzedPrimitive) {
         DataAccessor.analyzedPrimitive = analyzedPrimitive;
     }
-    
+
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -139,7 +141,7 @@ public class DataAccessor {
     public static void setPrimaryStage(Stage primaryStage) {
         DataAccessor.primaryStage = primaryStage;
     }
-    
+
     public static String getPrimitiveType() {
         return primitiveType;
     }
@@ -147,8 +149,8 @@ public class DataAccessor {
     public static void setPrimitiveType(String primitiveType) {
         DataAccessor.primitiveType = primitiveType;
     }
-    
-    public static void initializeRGBCMYKMaps(){
+
+    public static void initializeRGBCMYKMaps() {
         DataAccessor.cmykValues = new HashMap<>();
         cmykValues.put("c", 0);
         cmykValues.put("m", 0);

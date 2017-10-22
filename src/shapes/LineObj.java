@@ -9,7 +9,8 @@ package shapes;
  *
  * @author Mateusz
  */
-public class LineObj extends ShapeObj{
+public class LineObj extends ShapeObj {
+
     private double length;
 
     public double getLength() {
@@ -19,21 +20,21 @@ public class LineObj extends ShapeObj{
     public void setLength(double length) {
         this.length = length;
     }
-    
-    public LineObj(double x, double y, double length){
-        this.xCoord=x;
-        this.yCoord=y;
-        this.length=length;
+
+    public LineObj(double x, double y, double length) {
+        this.xCoord = x;
+        this.yCoord = y;
+        this.length = length;
     }
-    
-    public LineObj(double x, double y){
-        this.xCoord=x;
-        this.yCoord=y;
+
+    public LineObj(double x, double y) {
+        this.xCoord = x;
+        this.yCoord = y;
     }
-    
+
     @Override
     public ShapeObj returnShape(double x, double y) {
-        return new LineObj(x,y);
+        return new LineObj(x, y);
     }
-    
+
 }

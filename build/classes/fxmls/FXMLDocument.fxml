@@ -11,92 +11,92 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="542.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLDocumentController">
-   <children>
-      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <menus>
-            <Menu mnemonicParsing="false" text="File" />
-            <Menu mnemonicParsing="false" text="Options" />
-            <Menu mnemonicParsing="false" text="Help" />
-         </menus>
-      </MenuBar>
-      <TabPane fx:id="tabPane" layoutY="25.0" prefHeight="514.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-         <tabs>
-            <Tab text="Task 1">
-               <content>
-                  <SplitPane dividerPositions="0.1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <items>
-                        <VBox fx:id="leftVBox">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#createPrimitiveCustom" prefWidth="100.0" text="Create manually" textAlignment="CENTER" wrapText="true" />
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </VBox>
-                        <Pane fx:id="solver" prefHeight="483.0" prefWidth="0.0" style="-fx-background-color: white;" />
-                     </items>
-                  </SplitPane>
-               </content>
-            </Tab>
-            <Tab text="Task 2">
-               <content>
-                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
-                     <items>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#loadPPMFile" prefWidth="100.0" text="Load PPM file" textAlignment="CENTER" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadJPEGFile" prefWidth="100.0" text="Load JPEG file" textAlignment="CENTER" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Save as JPEG file" textAlignment="CENTER" wrapText="true" />
-                           </children>
-                        </VBox>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                           <content>
-                              <Canvas fx:id="myImage" height="200.0" width="200.0" />
-                           </content>
-                        </ScrollPane>
-                     </items>
-                  </SplitPane>
-               </content>
-            </Tab>
-            <Tab text="Task 3">
-               <content>
-                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
-                     <items>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#changeColorRGB" prefWidth="100.0" text="Set RGB values" textAlignment="CENTER" wrapText="true" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#changeColorCMYK" prefWidth="100.0" text="Set CMYK values" textAlignment="CENTER" wrapText="true" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#createRGBCube" prefWidth="100.0" text="Create RGB cube" textAlignment="CENTER" wrapText="true" />
-                              <Button layoutX="10.0" layoutY="114.0" mnemonicParsing="false" onAction="#createHSVCone" prefWidth="100.0" text="Create HSV cone" textAlignment="CENTER" wrapText="true" />
-                           </children>
-                        </VBox>
-                        <ScrollPane>
-                           <content>
-                              <HBox fx:id="myHBox">
-                                 <children>
-                                    <VBox fx:id="myVBox" prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <Rectangle fx:id="rgbRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                                          <Label fx:id="rLabel" text="R:" />
-                                          <Label fx:id="gLabel" text="G:" />
-                                          <Label fx:id="bLabel" text="B:" />
-                                          <Rectangle fx:id="cmykRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                                          <Label fx:id="cLabel" layoutX="10.0" layoutY="110.0" text="C:" />
-                                          <Label fx:id="mLabel" layoutX="10.0" layoutY="127.0" text="M:" />
-                                          <Label fx:id="yLabel" layoutX="10.0" layoutY="144.0" text="Y:" />
-                                          <Label fx:id="kLabel" layoutX="10.0" layoutY="144.0" text="K:" />
-                                       </children>
-                                    </VBox>
-                                    <Pane prefHeight="200.0" prefWidth="100.0" />
-                                 </children>
-                              </HBox>
-                           </content>
-                        </ScrollPane>
-                     </items>
-                  </SplitPane>
-               </content>
-            </Tab>
-         </tabs>
-      </TabPane>
-   </children>
+    <children>
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File" />
+                <Menu mnemonicParsing="false" text="Options" />
+                <Menu mnemonicParsing="false" text="Help" />
+            </menus>
+        </MenuBar>
+        <TabPane fx:id="tabPane" layoutY="25.0" prefHeight="514.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <tabs>
+                <Tab text="Task 1">
+                    <content>
+                        <SplitPane dividerPositions="0.1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+                                <VBox fx:id="leftVBox">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#createPrimitiveCustom" prefWidth="100.0" text="Create manually" textAlignment="CENTER" wrapText="true" />
+                                    </children>
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                </VBox>
+                                <Pane fx:id="solver" prefHeight="483.0" prefWidth="0.0" style="-fx-background-color: white;" />
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+                <Tab text="Task 2">
+                    <content>
+                        <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                            <items>
+                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#loadPPMFile" prefWidth="100.0" text="Load PPM file" textAlignment="CENTER" />
+                                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadJPEGFile" prefWidth="100.0" text="Load JPEG file" textAlignment="CENTER" />
+                                        <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Save as JPEG file" textAlignment="CENTER" wrapText="true" />
+                                    </children>
+                                </VBox>
+                                <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                    <content>
+                                        <Canvas fx:id="myImage" height="200.0" width="200.0" />
+                                    </content>
+                                </ScrollPane>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+                <Tab text="Task 3">
+                    <content>
+                        <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                            <items>
+                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#changeColorRGB" prefWidth="100.0" text="Set RGB values" textAlignment="CENTER" wrapText="true" />
+                                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#changeColorCMYK" prefWidth="100.0" text="Set CMYK values" textAlignment="CENTER" wrapText="true" />
+                                        <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#createRGBCube" prefWidth="100.0" text="Create RGB cube" textAlignment="CENTER" wrapText="true" />
+                                        <Button layoutX="10.0" layoutY="114.0" mnemonicParsing="false" onAction="#createHSVCone" prefWidth="100.0" text="Create HSV cone" textAlignment="CENTER" wrapText="true" />
+                                    </children>
+                                </VBox>
+                                <ScrollPane>
+                                    <content>
+                                        <HBox fx:id="myHBox">
+                                            <children>
+                                                <VBox fx:id="myVBox" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Rectangle fx:id="rgbRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                                                        <Label fx:id="rLabel" text="R:" />
+                                                        <Label fx:id="gLabel" text="G:" />
+                                                        <Label fx:id="bLabel" text="B:" />
+                                                        <Rectangle fx:id="cmykRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                                                        <Label fx:id="cLabel" layoutX="10.0" layoutY="110.0" text="C:" />
+                                                        <Label fx:id="mLabel" layoutX="10.0" layoutY="127.0" text="M:" />
+                                                        <Label fx:id="yLabel" layoutX="10.0" layoutY="144.0" text="Y:" />
+                                                        <Label fx:id="kLabel" layoutX="10.0" layoutY="144.0" text="K:" />
+                                                    </children>
+                                                </VBox>
+                                                <Pane prefHeight="200.0" prefWidth="100.0" />
+                                            </children>
+                                        </HBox>
+                                    </content>
+                                </ScrollPane>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>
