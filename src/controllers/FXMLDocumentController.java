@@ -35,8 +35,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -75,7 +78,12 @@ public class FXMLDocumentController implements Initializable {
     private Label yLabel;
     @FXML
     private Label kLabel;
-
+    @FXML
+    private Box rgbBox;
+    @FXML
+    private VBox myVBox;
+    @FXML
+    private HBox myHBox;
     @FXML
     private Canvas myImage;
     @FXML
@@ -103,8 +111,15 @@ public class FXMLDocumentController implements Initializable {
         setValuesForLabels();
         rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
+        
+
     }
 
+    @FXML
+    private void createRGBCube(){
+        showFXML("/fxmls/RGBCube.fxml", "RGB cube");
+    }
+    
     @FXML
     private void changeColorRGB(){
         DataAccessor.setIfRGB(true);
@@ -366,4 +381,7 @@ public class FXMLDocumentController implements Initializable {
                 ((Shape) t.getSource()).setTranslateX(0);
                 ((Shape) t.getSource()).setTranslateY(0);
             };
+    
+   
+    
 }

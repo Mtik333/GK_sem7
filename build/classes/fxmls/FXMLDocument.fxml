@@ -66,25 +66,30 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#changeColorRGB" prefWidth="100.0" text="Set RGB values" textAlignment="CENTER" wrapText="true" />
                               <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#changeColorCMYK" prefWidth="100.0" text="Set CMYK values" textAlignment="CENTER" wrapText="true" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Create RGB cube" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#createRGBCube" prefWidth="100.0" text="Create RGB cube" textAlignment="CENTER" wrapText="true" />
                               <Button layoutX="10.0" layoutY="114.0" mnemonicParsing="false" onAction="#saveAsJPEG" prefWidth="100.0" text="Create CMYK" textAlignment="CENTER" wrapText="true" />
                            </children>
                         </VBox>
                         <ScrollPane>
                            <content>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <HBox fx:id="myHBox">
                                  <children>
-                                    <Rectangle fx:id="rgbRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                                    <Label fx:id="rLabel" text="R:" />
-                                    <Label fx:id="gLabel" text="G:" />
-                                    <Label fx:id="bLabel" text="B:" />
-                                    <Rectangle fx:id="cmykRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                                    <Label fx:id="cLabel" layoutX="10.0" layoutY="110.0" text="C:" />
-                                    <Label fx:id="mLabel" layoutX="10.0" layoutY="127.0" text="M:" />
-                                    <Label fx:id="yLabel" layoutX="10.0" layoutY="144.0" text="Y:" />
-                                    <Label fx:id="kLabel" layoutX="10.0" layoutY="144.0" text="K:" />
+                                    <VBox fx:id="myVBox" prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Rectangle fx:id="rgbRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                                          <Label fx:id="rLabel" text="R:" />
+                                          <Label fx:id="gLabel" text="G:" />
+                                          <Label fx:id="bLabel" text="B:" />
+                                          <Rectangle fx:id="cmykRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                                          <Label fx:id="cLabel" layoutX="10.0" layoutY="110.0" text="C:" />
+                                          <Label fx:id="mLabel" layoutX="10.0" layoutY="127.0" text="M:" />
+                                          <Label fx:id="yLabel" layoutX="10.0" layoutY="144.0" text="Y:" />
+                                          <Label fx:id="kLabel" layoutX="10.0" layoutY="144.0" text="K:" />
+                                       </children>
+                                    </VBox>
+                                    <Pane prefHeight="200.0" prefWidth="100.0" />
                                  </children>
-                              </VBox>
+                              </HBox>
                            </content>
                         </ScrollPane>
                      </items>
