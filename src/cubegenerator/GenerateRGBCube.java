@@ -5,7 +5,6 @@
  */
 package cubegenerator;
 
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -27,15 +26,8 @@ public class GenerateRGBCube {
     public static BilinearGradient leftWall = new BilinearGradient(Color.rgb(0, 0, 255), Color.rgb(0, 255, 255), Color.rgb(0, 0, 0), Color.rgb(0, 255, 0));
     public static BilinearGradient bottomWall = new BilinearGradient(Color.rgb(0, 255, 0), Color.rgb(255, 255, 0), Color.rgb(0, 0, 0), Color.rgb(255, 0, 0));
     
-//    public static Stop[] stops1 = new Stop[]{new Stop(0, Color.rgb(0, 0, 255)), new Stop(1, Color.rgb(255, 255, 255))};
-//    public static Stop[] stops2 = new Stop[]{new Stop(0, Color.rgb(0, 255, 0)), new Stop(1, Color.rgb(255, 255, 255))};
-//    public static Stop[] stops3 = new Stop[]{new Stop(0, Color.rgb(255, 0, 0)), new Stop(1, Color.rgb(255, 255, 255))};
-//    public static Stop[] stops4 = new Stop[]{new Stop(0, Color.rgb(0, 0, 0)), new Stop(1, Color.rgb(255, 255, 0))};
-//    public static Stop[] stops5 = new Stop[]{new Stop(0, Color.rgb(0, 0, 0)), new Stop(1, Color.rgb(255, 0, 255))};
-//    public static Stop[] stops6 = new Stop[]{new Stop(0, Color.rgb(0, 0, 0)), new Stop(1, Color.rgb(0, 255, 255))};
-    
-    public static Group generateRGBCube(){
-        Group cube = new Group();
+    public static RotateCube generateRGBCube(){
+        RotateCube cube = new RotateCube();
         double size = 255;
         Image frontImage = frontWall.getImage(255,255);
         Image rightImage = rightWall.getImage(255,255);
@@ -50,6 +42,8 @@ public class GenerateRGBCube {
                 .translateX(-0.5 * size)
                 .translateY(-0.5 * size)
                 .translateZ(0.5 * size)
+                .rotationAxis(Rotate.Y_AXIS)
+                .rotate(0)
                 .build(),
                 RectangleBuilder.create() // bottom face
                 .width(size).height(size)
@@ -57,7 +51,7 @@ public class GenerateRGBCube {
                 .translateX(-0.5 * size)
                 .translateY(0)
                 .rotationAxis(Rotate.X_AXIS)
-                .rotate(-90)
+                .rotate(90)
                 .build(),
                 RectangleBuilder.create() // right face
                 .width(size).height(size)
@@ -65,7 +59,7 @@ public class GenerateRGBCube {
                 .translateX(-1 * size)
                 .translateY(-0.5 * size)
                 .rotationAxis(Rotate.Y_AXIS)
-                .rotate(-90)
+                .rotate(90)
                 .build(),
                 RectangleBuilder.create() // left face
                 .width(size).height(size)

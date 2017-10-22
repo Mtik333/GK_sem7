@@ -116,6 +116,11 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
+    private void createHSVCone(){
+        showFXML("/fxmls/HSVCone.fxml", "HSV cone");
+    }
+    
+    @FXML
     private void createRGBCube(){
         showFXML("/fxmls/RGBCube.fxml", "RGB cube");
     }

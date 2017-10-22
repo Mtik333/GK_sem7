@@ -74,6 +74,7 @@ public class BilinearGradient {
     }
     return raster;
   }
+  
 }
 
 
