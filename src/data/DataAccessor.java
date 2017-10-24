@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javax.imageio.metadata.IIOMetadata;
@@ -32,6 +33,15 @@ public class DataAccessor {
     public static Map<String, Integer> rgbValues = new HashMap<>(3);
     public static Map<String, Integer> cmykValues = new HashMap<>(4);
     public static boolean ifRGB = true;
+    public static ImageView imageView;
+
+    public static ImageView getImageView() {
+        return imageView;
+    }
+
+    public static void setImageView(ImageView imageView) {
+        DataAccessor.imageView = imageView;
+    }
 
     public static Map<String, Integer> getRgbValues() {
         return rgbValues;

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="MW_GK_projekt.jnlp">
-    <information>
-        <title>MW_GK_projekt</title>
-        <vendor>Mateusz</vendor>
-        <description>null</description>
-        <offline-allowed/>
-    </information>
-    <resources>
-        <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="MW_GK_projekt.jar" size="48406" download="eager" />
-    </resources>
-    <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="MW_GK_projekt" >
-        <param name="requiredFXVersion" value="8.0+"/>
-    </applet-desc>
-    <jfx:javafx-desc  width="800" height="600" main-class="mw_gk_projekt.MW_GK_projekt"  name="MW_GK_projekt" />
-    <update check="always"/>
+  <information>
+    <title>MW_GK_projekt</title>
+    <vendor>Mateusz</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="MW_GK_projekt.jar" size="67774" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="MW_GK_projekt" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="mw_gk_projekt.MW_GK_projekt"  name="MW_GK_projekt" />
+  <update check="always"/>
 </jnlp>

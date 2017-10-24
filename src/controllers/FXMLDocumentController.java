@@ -6,6 +6,9 @@
 package controllers;
 
 import data.DataAccessor;
+import filters.Zajecia2;
+import filters.Zajecia3;
+import filters.Zajecia4;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -32,6 +35,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -92,7 +96,13 @@ public class FXMLDocumentController implements Initializable {
     private Rectangle rgbRectangle;
     @FXML
     private Rectangle cmykRectangle;
+    @FXML
+    private ImageView myImageView;
 
+    private Zajecia2 zajecia2 = new Zajecia2();
+    private Zajecia3 zajecia3 = new Zajecia3();
+    private Zajecia4 zajecia4 = new Zajecia4();
+    
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
 
@@ -114,6 +124,36 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
+    @FXML
+    private void brightnessDialog(){
+        zajecia2.brightnessDialog();
+        
+    }
+    
+    @FXML
+    private void makeMonochrome(){
+        zajecia3.naSzaro();
+        myImageView = DataAccessor.getImageView();
+    }
+    
+    @FXML
+    private void linearFilter(){
+        zajecia4.matrixDialog();
+        myImageView = DataAccessor.getImageView();
+    }
+    
+    @FXML
+    private void medianFilter(){
+        zajecia4.medianaDialog();
+        myImageView = DataAccessor.getImageView();
+    }
+    
+    @FXML
+    private void kuwaharFilter(){
+        zajecia4.kuwaharFilter();
+        myImageView = DataAccessor.getImageView();
+    }
+    
     @FXML
     private void createHSVCone() {
         showFXML("/fxmls/HSVCone.fxml", "HSV cone");
@@ -214,9 +254,11 @@ public class FXMLDocumentController implements Initializable {
             DataAccessor.setImage(src);
             //BufferedImage image = ImageIO.read(file);
             Image image = new Image(new FileInputStream(file.getAbsoluteFile()));
-            myImage.setHeight(LoadFiles.height);
-            myImage.setWidth(LoadFiles.width);
-            myImage.getGraphicsContext2D().drawImage(image, 0, 0);
+            myImageView.setImage(image);
+            DataAccessor.setImageView(myImageView);
+//            myImage.setHeight(LoadFiles.height);
+//            myImage.setWidth(LoadFiles.width);
+//            myImage.getGraphicsContext2D().drawImage(image, 0, 0);
 
         }
     }
