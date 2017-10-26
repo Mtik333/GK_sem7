@@ -34,7 +34,16 @@ public class DataAccessor {
     public static Map<String, Integer> cmykValues = new HashMap<>(4);
     public static boolean ifRGB = true;
     public static ImageView imageView;
+    public static String mathOperation;
 
+    public static String getMathOperation() {
+        return mathOperation;
+    }
+
+    public static void setMathOperation(String mathOperation) {
+        DataAccessor.mathOperation = mathOperation;
+    }
+    
     public static ImageView getImageView() {
         return imageView;
     }

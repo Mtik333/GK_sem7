@@ -6,6 +6,7 @@
 package controllers;
 
 import data.DataAccessor;
+import filters.MathOperationFilter;
 import filters.Zajecia2;
 import filters.Zajecia3;
 import filters.Zajecia4;
@@ -102,6 +103,7 @@ public class FXMLDocumentController implements Initializable {
     private Zajecia2 zajecia2 = new Zajecia2();
     private Zajecia3 zajecia3 = new Zajecia3();
     private Zajecia4 zajecia4 = new Zajecia4();
+    private MathOperationFilter math = new MathOperationFilter();
     
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
@@ -124,6 +126,13 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
+    @FXML
+    private void mathOperation(){
+        showFXML("/fxmls/MathOperationFXML.fxml", "Math");
+        math.mathOperation();
+        myImageView = DataAccessor.getImageView();
+    }
+    
     @FXML
     private void brightnessDialog(){
         zajecia2.brightnessDialog();
