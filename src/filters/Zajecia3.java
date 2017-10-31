@@ -45,12 +45,13 @@ public class Zajecia3 {
             }
         }
         DataAccessor.imageView.setImage(wimage);
+        DataAccessor.setIsGray(true);
     }
     public void binaryzacjaManualDialog(){
         obrazek=DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Binaryzacja manualna");
-        if (false)
+        if (!DataAccessor.isIsGray())
             dialog.setHeaderText("Podaj wartość progową. Obraz zostanie przekonwertowany do skali szarości");
         else dialog.setHeaderText("Podaj wartość progową");
         Label label1 = new Label("Wartość: ");
@@ -76,7 +77,7 @@ public class Zajecia3 {
         }
     }
     public void binaryzacjaManual(int parametr){
-        if (false){
+        if (!DataAccessor.isIsGray()){
             naSzaro();
         }
         obrazek=DataAccessor.imageView.getImage();

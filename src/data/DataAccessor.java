@@ -35,6 +35,15 @@ public class DataAccessor {
     public static boolean ifRGB = true;
     public static ImageView imageView;
     public static String mathOperation;
+    public static boolean isGray = false;
+
+    public static boolean isIsGray() {
+        return isGray;
+    }
+
+    public static void setIsGray(boolean isGray) {
+        DataAccessor.isGray = isGray;
+    }
 
     public static String getMathOperation() {
         return mathOperation;

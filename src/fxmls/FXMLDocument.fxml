@@ -124,6 +124,37 @@
                   </SplitPane>
                </content>
             </Tab>
+            <Tab text="Task 5">
+               <content>
+                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                     <items>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#loadJPEGFile" prefWidth="100.0" text="Load image" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#showHistogram" prefWidth="100.0" text="Show histogram" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#equalizeHistogram" prefWidth="100.0" text="Equalize histogram" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="114.0" mnemonicParsing="false" onAction="#stretchHistogram" prefWidth="100.0" text="Stretch histogram" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="119.0" mnemonicParsing="false" onAction="#manualBinarization" prefWidth="100.0" text="Manual binarization" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="245.0" mnemonicParsing="false" onAction="#percentBlackSelection" prefWidth="100.0" text="Percent Black Selection" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="287.0" mnemonicParsing="false" onAction="#meanIterativeSelection" prefWidth="100.0" text="Mean Iterative Selection" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="329.0" mnemonicParsing="false" onAction="#entropySelection" prefWidth="100.0" text="Entropy Selection" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="371.0" mnemonicParsing="false" onAction="#minimumError" prefWidth="100.0" text="Minimum Error" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="413.0" mnemonicParsing="false" onAction="#fuzzyMinimumError" prefWidth="100.0" text="Fuzzy Minimum Error" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                        <ScrollPane>
+                           <content>
+                              <ImageView fx:id="myImageView1" fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </content>
+                        </ScrollPane>
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>

@@ -98,7 +98,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Rectangle cmykRectangle;
     @FXML
-    private ImageView myImageView;
+    private ImageView myImageView1;
 
     private Zajecia2 zajecia2 = new Zajecia2();
     private Zajecia3 zajecia3 = new Zajecia3();
@@ -127,10 +127,59 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
+    private void fuzzyMinimumError(){
+        
+    }
+    
+    @FXML
+    private void minimumError(){
+        
+    }
+    
+    @FXML
+    private void entropySelection(){
+        
+    }
+    
+    @FXML
+    private void meanIterativeSelection(){
+        
+    }
+    
+    @FXML
+    private void percentBlackSelection(){
+        
+    }
+    
+    @FXML
+    private void manualBinarization(){
+        zajecia3.binaryzacjaManualDialog();
+        myImageView1 = DataAccessor.getImageView();
+    }
+    
+    @FXML
+    private void stretchHistogram(){
+        zajecia2.stretchHistogramDialog();
+        myImageView1 = DataAccessor.getImageView();
+    }
+    
+    @FXML
+    private void equalizeHistogram(){
+        zajecia2.equalizeHistogram();
+        myImageView1 = DataAccessor.getImageView();
+    }
+    
+    @FXML
+    private void showHistogram(){
+        zajecia2.showHistogramDialog();
+        myImageView1 = DataAccessor.getImageView();
+    }
+    
+    @FXML
     private void mathOperation(){
         showFXML("/fxmls/MathOperationFXML.fxml", "Math");
         math.mathOperation();
-        myImageView = DataAccessor.getImageView();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
@@ -142,25 +191,25 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void makeMonochrome(){
         zajecia3.naSzaro();
-        myImageView = DataAccessor.getImageView();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
     private void linearFilter(){
         zajecia4.matrixDialog();
-        myImageView = DataAccessor.getImageView();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
     private void medianFilter(){
         zajecia4.medianaDialog();
-        myImageView = DataAccessor.getImageView();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
     private void kuwaharFilter(){
         zajecia4.kuwaharFilter();
-        myImageView = DataAccessor.getImageView();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
@@ -244,6 +293,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void loadJPEGFile() throws FileNotFoundException, IOException {
+        
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setTitle("Load PPM P3/P6 file");
@@ -252,6 +302,7 @@ public class FXMLDocumentController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
         if (file != null) {
+            DataAccessor.setIsGray(false);
             FileInputStream fis = new FileInputStream(file);
             BufferedImage src = null;
             Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
@@ -263,8 +314,8 @@ public class FXMLDocumentController implements Initializable {
             DataAccessor.setImage(src);
             //BufferedImage image = ImageIO.read(file);
             Image image = new Image(new FileInputStream(file.getAbsoluteFile()));
-            myImageView.setImage(image);
-            DataAccessor.setImageView(myImageView);
+            myImageView1.setImage(image);
+            DataAccessor.setImageView(myImageView1);
 //            myImage.setHeight(LoadFiles.height);
 //            myImage.setWidth(LoadFiles.width);
 //            myImage.getGraphicsContext2D().drawImage(image, 0, 0);
