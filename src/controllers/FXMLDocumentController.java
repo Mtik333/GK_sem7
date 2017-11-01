@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import binarization.BinariizationMethods;
 import data.DataAccessor;
 import filters.MathOperationFilter;
 import filters.Zajecia2;
@@ -104,6 +105,7 @@ public class FXMLDocumentController implements Initializable {
     private Zajecia3 zajecia3 = new Zajecia3();
     private Zajecia4 zajecia4 = new Zajecia4();
     private MathOperationFilter math = new MathOperationFilter();
+    private BinariizationMethods bmethods = new BinariizationMethods();
     
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
@@ -128,7 +130,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void fuzzyMinimumError(){
-        
+
     }
     
     @FXML
@@ -138,17 +140,17 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void entropySelection(){
-        
+        bmethods.entropySelection();
     }
     
     @FXML
     private void meanIterativeSelection(){
-        
+        bmethods.meanIterativeSelection();
     }
     
     @FXML
     private void percentBlackSelection(){
-        
+        bmethods.percentBlackDialog();
     }
     
     @FXML

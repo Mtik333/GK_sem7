@@ -48,7 +48,7 @@ public class BinariizationMethods {
         DataAccessor.setIsGray(true);
     }
     
-    public void binaryzacjaManualDialog(){
+    public void percentBlackDialog(){
         obrazek=DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Binaryzacja manualna");
@@ -84,10 +84,156 @@ public class BinariizationMethods {
             naSzaro();
         }
         obrazek=DataAccessor.imageView.getImage();
+        int hist[] = new int[256];
+        int total = (int) obrazek.getWidth() * (int) obrazek.getHeight();
+        PixelReader pr = obrazek.getPixelReader();
+        for (int i = 0; i < obrazek.getWidth(); i++) {
+            for (int j = 0; j < obrazek.getHeight(); j++) {
+                int argb = pr.getArgb(i, j);
+                int blue = argb & 0xFF;
+                hist[blue]++;
+            }
+        }
+        int threshold=0;
+        int realPercent = (int)(total*((double)percent/100));
+        for (int i=0; i<256; i++){
+            if (realPercent<=0){
+                threshold=i;
+                break;
+            }
+            else{
+                realPercent=realPercent-hist[i];
+            }
+        }
+        System.out.println(threshold);
+        binaryzacjaManual(threshold);
+    }
+    
+    public void binaryzacjaManual(int parametr){
+        if (!DataAccessor.isIsGray()){
+            naSzaro();
+        }
+        obrazek=DataAccessor.imageView.getImage();
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelReader pr = obrazek.getPixelReader();
         PixelWriter pw = wimage.getPixelWriter();
-        
+        int newPixel;
+        for (int i = 0; i < obrazek.getWidth(); i++) {
+            for (int j = 0; j < obrazek.getHeight(); j++) {
+                int argb = pr.getArgb(i, j);
+                int a = (argb >> 24) & 0xFF;
+                int blue = argb & 0xFF;
+                if (blue > parametr) {
+                    newPixel = 255;
+                } else {
+                    newPixel = 0;
+                }
+                argb = (a << 24) + ((int) newPixel << 16) + ((int) newPixel << 8) + (int) newPixel;
+                pw.setArgb(i, j, argb);
+            }
+        }
         DataAccessor.imageView.setImage(wimage);
+    }
+    
+    public void meanIterativeSelection(){
+        if (!DataAccessor.isIsGray()){
+            naSzaro();
+        }
+        obrazek=DataAccessor.imageView.getImage();
+        int hist[] = new int[256];
+        int total = (int) obrazek.getWidth() * (int) obrazek.getHeight();
+        PixelReader pr = obrazek.getPixelReader();
+        for (int i = 0; i < obrazek.getWidth(); i++) {
+            for (int j = 0; j < obrazek.getHeight(); j++) {
+                int argb = pr.getArgb(i, j);
+                int blue = argb & 0xFF;
+                hist[blue]++;
+            }
+        }
+        boolean endOfIter=false;
+        do{
+            endOfIter = calculatingIterations(DataAccessor.getThresholdForIterations(), hist);
+            System.out.println(DataAccessor.getThresholdForIterations());
+        }while (!endOfIter);
+        binaryzacjaManual(DataAccessor.getThresholdForIterations());
+        
+    }
+    
+    private boolean calculatingIterations(int threshold, int[] hist){
+        double meanBackground=0;
+        double meanObject=0;
+        int totalBackground=0;
+        int totalObject=0;
+        for (int i=0; i<=threshold; i++){
+            meanBackground=meanBackground+hist[i]*i;
+            totalBackground+=hist[i];
+        }
+        meanBackground=meanBackground/totalBackground;
+        for (int i=1+threshold; i<256; i++){
+            meanObject=meanObject+hist[i]*i;
+            totalObject+=hist[i];
+        }
+        meanObject=meanObject/totalObject;
+        int newThreshold = (int)Math.abs(meanBackground+meanObject)/2;
+        if (Math.abs(newThreshold-threshold)<=3){
+            return true;
+        }
+        else {
+            DataAccessor.setThresholdForIterations(newThreshold);
+            return false;
+        }
+    }
+    
+    public void entropySelection(){
+        if (!DataAccessor.isIsGray()){
+            naSzaro();
+        }
+        obrazek=DataAccessor.imageView.getImage();
+        int hist[] = new int[256];
+        int total = (int) obrazek.getWidth() * (int) obrazek.getHeight();
+        PixelReader pr = obrazek.getPixelReader();
+        for (int i = 0; i < obrazek.getWidth(); i++) {
+            for (int j = 0; j < obrazek.getHeight(); j++) {
+                int argb = pr.getArgb(i, j);
+                int blue = argb & 0xFF;
+                hist[blue]++;
+            }
+        }
+        boolean endOfEntropy=false;
+        do{
+            endOfEntropy = calculateEntropy(DataAccessor.getThresholdForIterations(), total, hist);
+        }while (!endOfEntropy);
+        System.out.println(DataAccessor.getThresholdForIterations());
+        binaryzacjaManual(DataAccessor.getThresholdForIterations());
+//        
+//        int totalBackground=0;
+//        int threshold=128;
+//        for (int i=0; i<=threshold; i++){
+//            totalBackground+=hist[i];
+//        }
+//        double probBackground=(double)totalBackground/(double)total;
+//        double probObject=1-probBackground;
+//        double logarithmBackground = (Math.log(probBackground) / Math.log(2));
+//        double logarithmObject = (Math.log(probObject) / Math.log(2));
+//        double entropy=(-1)*probObject*logarithmObject+(-1)*probBackground*logarithmBackground;
+//        System.out.println(entropy);
+        
+    }
+    
+    private boolean calculateEntropy(int threshold, int total, int[] hist){
+        int totalBackground=0;
+        for (int i=0; i<=threshold; i++){
+            totalBackground+=hist[i];
+        }
+        double probBackground=(double)totalBackground/(double)total;
+        if (Math.abs(probBackground-0.5)<0.025){
+            return true;
+        }
+        else {
+            if (probBackground<0.5)
+                DataAccessor.setThresholdForIterations(threshold+1);
+            else DataAccessor.setThresholdForIterations(threshold-1);
+            return false;
+        }
     }
 }

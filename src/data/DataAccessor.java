@@ -36,6 +36,15 @@ public class DataAccessor {
     public static ImageView imageView;
     public static String mathOperation;
     public static boolean isGray = false;
+    public static int thresholdForIterations=128;
+
+    public static int getThresholdForIterations() {
+        return thresholdForIterations;
+    }
+
+    public static void setThresholdForIterations(int thresholdForIterations) {
+        DataAccessor.thresholdForIterations = thresholdForIterations;
+    }
 
     public static boolean isIsGray() {
         return isGray;
