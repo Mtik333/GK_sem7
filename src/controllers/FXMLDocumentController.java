@@ -14,7 +14,6 @@ import filters.Zajecia4;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -55,11 +54,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.imageio.stream.ImageInputStream;
 import loadingfile.Convertion;
 import loadingfile.LoadFiles;
 import shapes.*;
@@ -135,22 +132,26 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void minimumError(){
-        
+        bmethods.minimumErrorVerify();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
     private void entropySelection(){
         bmethods.entropySelection();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
     private void meanIterativeSelection(){
         bmethods.meanIterativeSelection();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
     private void percentBlackSelection(){
         bmethods.percentBlackDialog();
+        myImageView1 = DataAccessor.getImageView();
     }
     
     @FXML
@@ -305,19 +306,25 @@ public class FXMLDocumentController implements Initializable {
         File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
         if (file != null) {
             DataAccessor.setIsGray(false);
-            FileInputStream fis = new FileInputStream(file);
-            BufferedImage src = null;
-            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
-            ImageReader reader = it.next();
-            ImageInputStream iis = ImageIO.createImageInputStream(fis);
-            reader.setInput(iis, false, false);
-            src = reader.read(0);
-            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
-            DataAccessor.setImage(src);
-            //BufferedImage image = ImageIO.read(file);
-            Image image = new Image(new FileInputStream(file.getAbsoluteFile()));
-            myImageView1.setImage(image);
+            DataAccessor.setMinimalDistribution(0);
+            DataAccessor.setThresholdForIterations(128);
+            Image image2 = new Image(file.toURI().toString());
+            myImageView1.setImage(image2);
             DataAccessor.setImageView(myImageView1);
+            
+//            FileInputStream fis = new FileInputStream(file);
+//            BufferedImage src = null;
+//            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
+//            ImageReader reader = it.next();
+//            ImageInputStream iis = ImageIO.createImageInputStream(fis);
+//            reader.setInput(iis, false, false);
+//            src = reader.read(0);
+//            DataAccessor.setImageMetadata(reader.getImageMetadata(0));
+//            DataAccessor.setImage(src);
+//            //BufferedImage image = ImageIO.read(file);
+//            Image image = new Image(new FileInputStream(file.getAbsoluteFile()));
+//            myImageView1.setImage(image);
+//            DataAccessor.setImageView(myImageView1);
 //            myImage.setHeight(LoadFiles.height);
 //            myImage.setWidth(LoadFiles.width);
 //            myImage.getGraphicsContext2D().drawImage(image, 0, 0);

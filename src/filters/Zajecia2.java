@@ -456,6 +456,7 @@ public class Zajecia2 {
             }
         }
         DataAccessor.imageView.setImage(wimage);
+        
     }
     //funkcja nieużywana
     public void showHistogram(){

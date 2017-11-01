@@ -37,6 +37,16 @@ public class DataAccessor {
     public static String mathOperation;
     public static boolean isGray = false;
     public static int thresholdForIterations=128;
+    public static double minimalDistribution;
+
+    public static double getMinimalDistribution() {
+        return minimalDistribution;
+    }
+
+    public static void setMinimalDistribution(double minimalDistribution) {
+        DataAccessor.minimalDistribution = minimalDistribution;
+    }
+    
 
     public static int getThresholdForIterations() {
         return thresholdForIterations;
