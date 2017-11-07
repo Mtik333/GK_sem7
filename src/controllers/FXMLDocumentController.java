@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import bezier.BezierCurve;
 import binarization.BinariizationMethods;
 import data.DataAccessor;
 import filters.MathOperationFilter;
@@ -33,6 +34,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -90,6 +92,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Canvas myImage;
     @FXML
+    private Canvas bezierCanva;
+    @FXML
     private Pane solver;
     @FXML
     private Rectangle rgbRectangle;
@@ -97,12 +101,15 @@ public class FXMLDocumentController implements Initializable {
     private Rectangle cmykRectangle;
     @FXML
     private ImageView myImageView1;
+    @FXML
+    private Pane myCanvaScrollPane;
 
     private Zajecia2 zajecia2 = new Zajecia2();
     private Zajecia3 zajecia3 = new Zajecia3();
     private Zajecia4 zajecia4 = new Zajecia4();
     private MathOperationFilter math = new MathOperationFilter();
     private BinariizationMethods bmethods = new BinariizationMethods();
+    private BezierCurve bezierCurve = new BezierCurve();
     
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
@@ -123,8 +130,42 @@ public class FXMLDocumentController implements Initializable {
         rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
 
+        GraphicsContext gc = bezierCanva.getGraphicsContext2D();
+        bezierCanva.setOnMouseClicked((MouseEvent event) ->{
+            gc.clearRect(0, 0, 900, 480);
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            Circle c = new Circle(x, y, 5);
+            DataAccessor.getControlPoints().add(c);
+            myCanvaScrollPane.getChildren().add(c);
+            c.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                gc.clearRect(0, 0, 900, 480);
+                Circle clicked = (Circle) mouseEvent.getSource();
+                clicked.setCenterX(mouseEvent.getX());
+                clicked.setCenterY(mouseEvent.getY());
+                bezierCurve.calculateBezierCurve();
+                DataAccessor.getBezierPoints().forEach((circle) -> {
+                    gc.fillRect(circle.getCenterX(), circle.getCenterY(), 1, 1);
+                });
+            });
+            gc.clearRect(0, 0, 900, 480);
+            bezierCurve.calculateBezierCurve();
+            DataAccessor.getBezierPoints().forEach((circle) -> {
+                gc.fillRect(circle.getCenterX(), circle.getCenterY(), 1, 1);
+            });
+        });
     }
-
+    
+    @FXML
+    private void resetCanva(){
+        GraphicsContext gc = bezierCanva.getGraphicsContext2D();
+        gc.clearRect(0, 0, 900, 480);
+        DataAccessor.getBezierPoints().clear();
+        DataAccessor.getControlPoints().clear();
+        myCanvaScrollPane.getChildren().clear();
+        myCanvaScrollPane.getChildren().add(bezierCanva);
+    }
+    
     @FXML
     private void fuzzyMinimumError(){
 

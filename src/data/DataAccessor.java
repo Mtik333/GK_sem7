@@ -6,10 +6,12 @@
 package data;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javax.imageio.metadata.IIOMetadata;
@@ -38,6 +40,24 @@ public class DataAccessor {
     public static boolean isGray = false;
     public static int thresholdForIterations=128;
     public static double minimalDistribution;
+    public static List<Circle> controlPoints = new ArrayList<>();
+    public static List<Circle> bezierPoints = new ArrayList<>();
+
+    public static List<Circle> getControlPoints() {
+        return controlPoints;
+    }
+
+    public static void setControlPoints(List<Circle> controlPoints) {
+        DataAccessor.controlPoints = controlPoints;
+    }
+
+    public static List<Circle> getBezierPoints() {
+        return bezierPoints;
+    }
+
+    public static void setBezierPoints(List<Circle> bezierPoints) {
+        DataAccessor.bezierPoints = bezierPoints;
+    }
 
     public static double getMinimalDistribution() {
         return minimalDistribution;
