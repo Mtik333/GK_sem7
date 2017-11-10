@@ -173,6 +173,47 @@
                   </SplitPane>
                </content>
             </Tab>
+            <Tab text="Task 7">
+               <content>
+                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                     <items>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Reset canva" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Create points" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#createPolygon" prefWidth="100.0" text="Create polygon" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Translate with vector" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Rotate in regard to point" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="102.0" mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Scale by integer in regard to point" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                        <Pane fx:id="myCanvaScrollPane1">
+                           <children>
+                              <Canvas fx:id="bezierCanva1" height="480.0" width="900.0" />
+                           </children>
+                        </Pane>
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
+            <Tab text="Task 8">
+               <content>
+                  <SplitPane dividerPositions="0.1" prefHeight="200.0" prefWidth="200.0">
+                     <items>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Reset canva" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                        <Pane fx:id="myCanvaScrollPane11">
+                           <children>
+                              <Canvas fx:id="bezierCanva11" height="480.0" width="900.0" />
+                           </children>
+                        </Pane>
+                     </items>
+                  </SplitPane>
+               </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>

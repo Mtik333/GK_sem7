@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javax.imageio.metadata.IIOMetadata;
@@ -42,6 +43,24 @@ public class DataAccessor {
     public static double minimalDistribution;
     public static List<Circle> controlPoints = new ArrayList<>();
     public static List<Circle> bezierPoints = new ArrayList<>();
+    public static List<Circle> polygonPoints = new ArrayList<>();
+    public static Polygon polygon;
+
+    public static List<Circle> getPolygonPoints() {
+        return polygonPoints;
+    }
+
+    public static void setPolygonPoints(List<Circle> polygonPoints) {
+        DataAccessor.polygonPoints = polygonPoints;
+    }
+
+    public static Polygon getPolygon() {
+        return polygon;
+    }
+
+    public static void setPolygon(Polygon polygon) {
+        DataAccessor.polygon = polygon;
+    }
 
     public static List<Circle> getControlPoints() {
         return controlPoints;

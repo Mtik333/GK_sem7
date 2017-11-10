@@ -62,6 +62,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import loadingfile.Convertion;
 import loadingfile.LoadFiles;
 import shapes.*;
+import transformations.Transformations;
 
 /**
  *
@@ -103,6 +104,11 @@ public class FXMLDocumentController implements Initializable {
     private ImageView myImageView1;
     @FXML
     private Pane myCanvaScrollPane;
+    
+    @FXML
+    private Canvas bezierCanva1;
+    @FXML
+    private Pane myCanvaScrollPane1;
 
     private Zajecia2 zajecia2 = new Zajecia2();
     private Zajecia3 zajecia3 = new Zajecia3();
@@ -110,6 +116,8 @@ public class FXMLDocumentController implements Initializable {
     private MathOperationFilter math = new MathOperationFilter();
     private BinariizationMethods bmethods = new BinariizationMethods();
     private BezierCurve bezierCurve = new BezierCurve();
+    private Transformations transform = new Transformations();
+    private GraphicsContext gc;
     
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
@@ -129,7 +137,63 @@ public class FXMLDocumentController implements Initializable {
         setValuesForLabels();
         rgbRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
         cmykRectangle.setFill(Color.rgb(DataAccessor.getRgbValues().get("r"), DataAccessor.getRgbValues().get("g"), DataAccessor.getRgbValues().get("b")));
-
+        gc = bezierCanva1.getGraphicsContext2D();
+        bezier();
+        polygons();
+//        Polygon polygon = new Polygon();
+//        polygon.getPoints().addAll(new Double[]{
+//            100.0, 100.0,
+//            200.0, 100.0,
+//            200.0, 200.0,
+//            150.0, 200.0
+//        });
+//        DataAccessor.setPolygon(polygon);
+//        //myCanvaScrollPane1.getChildren().add(polygon);
+//        //transform.translatePointsByVector(50,150);
+//        transform.scaleByPointAndFactor(50,150,2);
+//        //transform.rotateByPointAndAngle(50.0, 150.0, 90.0);
+//       
+//        myCanvaScrollPane1.getChildren().add(polygon);
+    }
+    
+    private void polygons(){
+        bezierCanva1.setOnMouseClicked((MouseEvent event) ->{
+            //gc.clearRect(0, 0, 900, 480);
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            Circle c = new Circle(x, y, 5);
+            DataAccessor.getPolygonPoints().add(c);
+            myCanvaScrollPane1.getChildren().add(c);
+        });
+    }
+    
+    @FXML
+    private void createPolygon(){
+        double[] xpoints = new double[DataAccessor.getPolygonPoints().size()];
+        double[] ypoints = new double[DataAccessor.getPolygonPoints().size()];
+        for (int i=0; i<DataAccessor.getPolygonPoints().size(); i++){
+            xpoints[i]=DataAccessor.getPolygonPoints().get(i).getCenterX();
+            ypoints[i]=DataAccessor.getPolygonPoints().get(i).getCenterY();
+        }
+        gc.fillPolygon(xpoints, ypoints, DataAccessor.getPolygonPoints().size());
+    }
+    
+    @FXML
+    private void translateVector(){
+        
+    }
+    
+    @FXML
+    private void rotate(){
+        
+    }
+    
+    @FXML
+    private void scale(){
+        
+    }
+    
+    private void bezier(){
         GraphicsContext gc = bezierCanva.getGraphicsContext2D();
         bezierCanva.setOnMouseClicked((MouseEvent event) ->{
             gc.clearRect(0, 0, 900, 480);
