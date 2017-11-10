@@ -44,7 +44,25 @@ public class DataAccessor {
     public static List<Circle> controlPoints = new ArrayList<>();
     public static List<Circle> bezierPoints = new ArrayList<>();
     public static List<Circle> polygonPoints = new ArrayList<>();
+    public static List<List<Circle>> myPolygons = new ArrayList<>();
     public static Polygon polygon;
+    public static Circle changePoint;
+
+    public static Circle getChangePoint() {
+        return changePoint;
+    }
+
+    public static void setChangePoint(Circle changePoint) {
+        DataAccessor.changePoint = changePoint;
+    }
+
+    public static List<List<Circle>> getMyPolygons() {
+        return myPolygons;
+    }
+
+    public static void setMyPolygons(List<List<Circle>> myPolygons) {
+        DataAccessor.myPolygons = myPolygons;
+    }
 
     public static List<Circle> getPolygonPoints() {
         return polygonPoints;

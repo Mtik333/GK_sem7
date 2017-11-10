@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -175,22 +176,68 @@ public class FXMLDocumentController implements Initializable {
             xpoints[i]=DataAccessor.getPolygonPoints().get(i).getCenterX();
             ypoints[i]=DataAccessor.getPolygonPoints().get(i).getCenterY();
         }
-        gc.fillPolygon(xpoints, ypoints, DataAccessor.getPolygonPoints().size());
+        gc.strokePolygon(xpoints, ypoints, DataAccessor.getPolygonPoints().size());
+        DataAccessor.getMyPolygons().add(DataAccessor.getPolygonPoints());
+        List<Circle> circles = new ArrayList<>();
+        List<List<Circle>> polygons = DataAccessor.getMyPolygons();
+        DataAccessor.setPolygonPoints(circles);
     }
     
     @FXML
-    private void translateVector(){
-        
+    private void translate(){
+        showFXML("/fxmls/TranslateFXML.fxml", "Rotate");
+        //gc.clearRect(0, 0, 900, 480);
+        myCanvaScrollPane1.getChildren().clear();
+        myCanvaScrollPane1.getChildren().add(bezierCanva1);
+        DataAccessor.getMyPolygons().forEach((circles) -> {
+            double[] xpoints = new double[circles.size()];
+            double[] ypoints = new double[circles.size()];
+            for (int i=0; i<circles.size(); i++){
+                xpoints[i]=circles.get(i).getCenterX();
+                ypoints[i]=circles.get(i).getCenterY();
+                myCanvaScrollPane1.getChildren().add(circles.get(i));
+            }
+            gc.strokePolygon(xpoints, ypoints, circles.size());
+        });
     }
     
     @FXML
     private void rotate(){
-        
+        showFXML("/fxmls/RotateFXML.fxml", "Rotate");
+        //gc.clearRect(0, 0, 900, 480);
+        myCanvaScrollPane1.getChildren().clear();
+        myCanvaScrollPane1.getChildren().add(bezierCanva1);
+        DataAccessor.getMyPolygons().forEach((circles) -> {
+            double[] xpoints = new double[circles.size()];
+            double[] ypoints = new double[circles.size()];
+            for (int i=0; i<circles.size(); i++){
+                xpoints[i]=circles.get(i).getCenterX();
+                ypoints[i]=circles.get(i).getCenterY();
+                myCanvaScrollPane1.getChildren().add(circles.get(i));
+            }
+            gc.strokePolygon(xpoints, ypoints, circles.size());
+        });
+        myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
     }
     
     @FXML
     private void scale(){
-        
+        showFXML("/fxmls/ScaleFXML.fxml", "Rotate");
+        GraphicsContext gc = bezierCanva1.getGraphicsContext2D();
+        //gc.clearRect(0, 0, 900, 480);
+        myCanvaScrollPane1.getChildren().clear();
+        myCanvaScrollPane1.getChildren().add(bezierCanva1);
+        DataAccessor.getMyPolygons().forEach((circles) -> {
+            double[] xpoints = new double[circles.size()];
+            double[] ypoints = new double[circles.size()];
+            for (int i=0; i<circles.size(); i++){
+                xpoints[i]=circles.get(i).getCenterX();
+                ypoints[i]=circles.get(i).getCenterY();
+                myCanvaScrollPane1.getChildren().add(circles.get(i));
+            }
+            gc.strokePolygon(xpoints, ypoints, xpoints.length);
+        });
+        myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
     }
     
     private void bezier(){
@@ -228,6 +275,16 @@ public class FXMLDocumentController implements Initializable {
         DataAccessor.getControlPoints().clear();
         myCanvaScrollPane.getChildren().clear();
         myCanvaScrollPane.getChildren().add(bezierCanva);
+    }
+    
+    @FXML
+    private void resetCanva2(){
+        GraphicsContext gc = bezierCanva1.getGraphicsContext2D();
+        gc.clearRect(0, 0, 900, 480);
+        DataAccessor.getPolygonPoints().clear();
+        DataAccessor.getMyPolygons().clear();
+        myCanvaScrollPane1.getChildren().clear();
+        myCanvaScrollPane1.getChildren().add(bezierCanva1);
     }
     
     @FXML
