@@ -180,11 +180,12 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#resetCanva2" prefWidth="100.0" text="Reset canva" textAlignment="CENTER" wrapText="true" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Create points" textAlignment="CENTER" wrapText="true" />
                               <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#createPolygon" prefWidth="100.0" text="Create polygon" textAlignment="CENTER" wrapText="true" />
                               <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#translate" prefWidth="100.0" text="Translate with vector" textAlignment="CENTER" wrapText="true" />
                               <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#rotate" prefWidth="100.0" text="Rotate in regard to point" textAlignment="CENTER" wrapText="true" />
                               <Button layoutX="10.0" layoutY="102.0" mnemonicParsing="false" onAction="#scale" prefWidth="100.0" text="Scale by integer in regard to point" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="144.0" mnemonicParsing="false" onAction="#saveToFile" prefWidth="100.0" text="Save to file" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="203.0" mnemonicParsing="false" onAction="#loadFromFile" prefWidth="100.0" text="Load from file" textAlignment="CENTER" wrapText="true" />
                            </children>
                         </VBox>
                         <Pane fx:id="myCanvaScrollPane1">

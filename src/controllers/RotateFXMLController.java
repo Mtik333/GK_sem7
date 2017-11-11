@@ -7,6 +7,7 @@ package controllers;
 
 import data.DataAccessor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -65,12 +66,12 @@ public class RotateFXMLController implements Initializable {
             points[i+1]=polygon.get(i/2).getCenterY();
         }
         rotate.transform2DPoints(points, 0, points, 0, points.length/2);
-        polygon.clear();
+        List<Circle> newPolygon = new ArrayList<>();
         for (int i=0; i<points.length; i+=2){
             Circle circle = new Circle(points[i], points[i+1], 3);
-            polygon.add(circle);
+            newPolygon.add(circle);
         }
-        DataAccessor.getMyPolygons().set(chosenPrimitive.getSelectionModel().getSelectedIndex(), polygon);
+        DataAccessor.getMyPolygons().add(newPolygon);
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
         

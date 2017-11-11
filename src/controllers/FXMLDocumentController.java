@@ -16,6 +16,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -62,6 +65,9 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 import loadingfile.Convertion;
 import loadingfile.LoadFiles;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import shapes.*;
 import transformations.Transformations;
 
@@ -105,7 +111,7 @@ public class FXMLDocumentController implements Initializable {
     private ImageView myImageView1;
     @FXML
     private Pane myCanvaScrollPane;
-    
+
     @FXML
     private Canvas bezierCanva1;
     @FXML
@@ -119,7 +125,7 @@ public class FXMLDocumentController implements Initializable {
     private BezierCurve bezierCurve = new BezierCurve();
     private Transformations transform = new Transformations();
     private GraphicsContext gc;
-    
+
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
     double orgTranslateX, orgTranslateY; //do przenoszenia wierzcholkow/krawedzi
 
@@ -141,24 +147,10 @@ public class FXMLDocumentController implements Initializable {
         gc = bezierCanva1.getGraphicsContext2D();
         bezier();
         polygons();
-//        Polygon polygon = new Polygon();
-//        polygon.getPoints().addAll(new Double[]{
-//            100.0, 100.0,
-//            200.0, 100.0,
-//            200.0, 200.0,
-//            150.0, 200.0
-//        });
-//        DataAccessor.setPolygon(polygon);
-//        //myCanvaScrollPane1.getChildren().add(polygon);
-//        //transform.translatePointsByVector(50,150);
-//        transform.scaleByPointAndFactor(50,150,2);
-//        //transform.rotateByPointAndAngle(50.0, 150.0, 90.0);
-//       
-//        myCanvaScrollPane1.getChildren().add(polygon);
     }
-    
-    private void polygons(){
-        bezierCanva1.setOnMouseClicked((MouseEvent event) ->{
+
+    private void polygons() {
+        bezierCanva1.setOnMouseClicked((MouseEvent event) -> {
             //gc.clearRect(0, 0, 900, 480);
             int x = (int) event.getX();
             int y = (int) event.getY();
@@ -167,14 +159,74 @@ public class FXMLDocumentController implements Initializable {
             myCanvaScrollPane1.getChildren().add(c);
         });
     }
+
+    @FXML
+    private void loadFromFile(){
+        gc.clearRect(0, 0, 900, 480);
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader("shapes.json"));
+            JSONArray array = (JSONArray) obj;
+            JSONObject object = (JSONObject) array.get(0);
+            boolean end=false;
+            int i=0;
+            List<List<Circle>> polygons = new ArrayList<>();
+            while(!end){
+                List<Circle> circles = new ArrayList<>();
+                JSONArray points =(JSONArray) object.get(String.valueOf(i));
+                if (points==null){
+                    end=true;
+                    break;
+                }
+                JSONObject objPoints = (JSONObject) points.get(0);
+                for (int j=0; j<objPoints.size()/2; j++){
+                    Double xPoint=(Double) objPoints.get("x"+j);
+                    Double yPoint=(Double) objPoints.get("y"+j);
+                    Circle circle = new Circle(xPoint, yPoint, 5);
+                    circles.add(circle);
+                }
+                polygons.add(circles);
+                i++;
+            }
+            DataAccessor.setMyPolygons(polygons);
+            drawPolygon();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     @FXML
-    private void createPolygon(){
+    private void saveToFile() throws IOException {
+        JSONArray allPolygons = new JSONArray();
+        JSONObject polygon1 = new JSONObject();
+        int i=0;
+        for (List<Circle> polygon : DataAccessor.getMyPolygons()) {
+            JSONArray list = new JSONArray();
+            JSONObject object = new JSONObject();
+            int j=0;
+            for (Circle circle : polygon) {
+                object.put("x"+j, circle.getCenterX());
+                object.put("y"+j, circle.getCenterY());
+                j++;
+            }
+            list.add(object);
+            polygon1.put(i, list);
+            i++;
+        }
+        allPolygons.add(polygon1);
+        try (FileWriter file = new FileWriter("shapes.json")) {
+            file.write(allPolygons.toJSONString());
+            System.out.println("Successfully Copied JSON Object to File...");
+        }
+    }
+
+    @FXML
+    private void createPolygon() {
         double[] xpoints = new double[DataAccessor.getPolygonPoints().size()];
         double[] ypoints = new double[DataAccessor.getPolygonPoints().size()];
-        for (int i=0; i<DataAccessor.getPolygonPoints().size(); i++){
-            xpoints[i]=DataAccessor.getPolygonPoints().get(i).getCenterX();
-            ypoints[i]=DataAccessor.getPolygonPoints().get(i).getCenterY();
+        for (int i = 0; i < DataAccessor.getPolygonPoints().size(); i++) {
+            xpoints[i] = DataAccessor.getPolygonPoints().get(i).getCenterX();
+            ypoints[i] = DataAccessor.getPolygonPoints().get(i).getCenterY();
         }
         gc.strokePolygon(xpoints, ypoints, DataAccessor.getPolygonPoints().size());
         DataAccessor.getMyPolygons().add(DataAccessor.getPolygonPoints());
@@ -182,67 +234,57 @@ public class FXMLDocumentController implements Initializable {
         List<List<Circle>> polygons = DataAccessor.getMyPolygons();
         DataAccessor.setPolygonPoints(circles);
     }
-    
+
     @FXML
-    private void translate(){
+    private void translate() {
         showFXML("/fxmls/TranslateFXML.fxml", "Rotate");
         //gc.clearRect(0, 0, 900, 480);
-        myCanvaScrollPane1.getChildren().clear();
-        myCanvaScrollPane1.getChildren().add(bezierCanva1);
-        DataAccessor.getMyPolygons().forEach((circles) -> {
-            double[] xpoints = new double[circles.size()];
-            double[] ypoints = new double[circles.size()];
-            for (int i=0; i<circles.size(); i++){
-                xpoints[i]=circles.get(i).getCenterX();
-                ypoints[i]=circles.get(i).getCenterY();
-                myCanvaScrollPane1.getChildren().add(circles.get(i));
-            }
-            gc.strokePolygon(xpoints, ypoints, circles.size());
-        });
+        drawPolygon();
     }
-    
+
     @FXML
-    private void rotate(){
+    private void rotate() {
         showFXML("/fxmls/RotateFXML.fxml", "Rotate");
         //gc.clearRect(0, 0, 900, 480);
+        drawPolygon();
+        myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
+    }
+
+    @FXML
+    private void scale() {
+        showFXML("/fxmls/ScaleFXML.fxml", "Rotate");
+        //gc.clearRect(0, 0, 900, 480);
+        drawPolygon();
+        myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
+    }
+    
+    private void drawPolygon(){
         myCanvaScrollPane1.getChildren().clear();
         myCanvaScrollPane1.getChildren().add(bezierCanva1);
         DataAccessor.getMyPolygons().forEach((circles) -> {
             double[] xpoints = new double[circles.size()];
             double[] ypoints = new double[circles.size()];
-            for (int i=0; i<circles.size(); i++){
-                xpoints[i]=circles.get(i).getCenterX();
-                ypoints[i]=circles.get(i).getCenterY();
+            for (int i = 0; i < circles.size(); i++) {
+                xpoints[i] = circles.get(i).getCenterX();
+                ypoints[i] = circles.get(i).getCenterY();
                 myCanvaScrollPane1.getChildren().add(circles.get(i));
             }
+            gc.setStroke(randomPaint());
             gc.strokePolygon(xpoints, ypoints, circles.size());
         });
-        myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
     }
     
-    @FXML
-    private void scale(){
-        showFXML("/fxmls/ScaleFXML.fxml", "Rotate");
-        GraphicsContext gc = bezierCanva1.getGraphicsContext2D();
-        //gc.clearRect(0, 0, 900, 480);
-        myCanvaScrollPane1.getChildren().clear();
-        myCanvaScrollPane1.getChildren().add(bezierCanva1);
-        DataAccessor.getMyPolygons().forEach((circles) -> {
-            double[] xpoints = new double[circles.size()];
-            double[] ypoints = new double[circles.size()];
-            for (int i=0; i<circles.size(); i++){
-                xpoints[i]=circles.get(i).getCenterX();
-                ypoints[i]=circles.get(i).getCenterY();
-                myCanvaScrollPane1.getChildren().add(circles.get(i));
-            }
-            gc.strokePolygon(xpoints, ypoints, xpoints.length);
-        });
-        myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
+    private Color randomPaint() {
+        int red = ThreadLocalRandom.current().nextInt(0, 255 + 1);
+        int green = ThreadLocalRandom.current().nextInt(0, 255 + 1);
+        int blue = ThreadLocalRandom.current().nextInt(0, 255 + 1);
+        Color color = Color.rgb(red, green, blue);
+        return color;
     }
-    
-    private void bezier(){
+
+    private void bezier() {
         GraphicsContext gc = bezierCanva.getGraphicsContext2D();
-        bezierCanva.setOnMouseClicked((MouseEvent event) ->{
+        bezierCanva.setOnMouseClicked((MouseEvent event) -> {
             gc.clearRect(0, 0, 900, 480);
             int x = (int) event.getX();
             int y = (int) event.getY();
@@ -266,9 +308,9 @@ public class FXMLDocumentController implements Initializable {
             });
         });
     }
-    
+
     @FXML
-    private void resetCanva(){
+    private void resetCanva() {
         GraphicsContext gc = bezierCanva.getGraphicsContext2D();
         gc.clearRect(0, 0, 900, 480);
         DataAccessor.getBezierPoints().clear();
@@ -276,9 +318,9 @@ public class FXMLDocumentController implements Initializable {
         myCanvaScrollPane.getChildren().clear();
         myCanvaScrollPane.getChildren().add(bezierCanva);
     }
-    
+
     @FXML
-    private void resetCanva2(){
+    private void resetCanva2() {
         GraphicsContext gc = bezierCanva1.getGraphicsContext2D();
         gc.clearRect(0, 0, 900, 480);
         DataAccessor.getPolygonPoints().clear();
@@ -286,97 +328,97 @@ public class FXMLDocumentController implements Initializable {
         myCanvaScrollPane1.getChildren().clear();
         myCanvaScrollPane1.getChildren().add(bezierCanva1);
     }
-    
+
     @FXML
-    private void fuzzyMinimumError(){
+    private void fuzzyMinimumError() {
 
     }
-    
+
     @FXML
-    private void minimumError(){
+    private void minimumError() {
         bmethods.minimumErrorVerify();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void entropySelection(){
+    private void entropySelection() {
         bmethods.entropySelection();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void meanIterativeSelection(){
+    private void meanIterativeSelection() {
         bmethods.meanIterativeSelection();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void percentBlackSelection(){
+    private void percentBlackSelection() {
         bmethods.percentBlackDialog();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void manualBinarization(){
+    private void manualBinarization() {
         zajecia3.binaryzacjaManualDialog();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void stretchHistogram(){
+    private void stretchHistogram() {
         zajecia2.stretchHistogramDialog();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void equalizeHistogram(){
+    private void equalizeHistogram() {
         zajecia2.equalizeHistogram();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void showHistogram(){
+    private void showHistogram() {
         zajecia2.showHistogramDialog();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void mathOperation(){
+    private void mathOperation() {
         showFXML("/fxmls/MathOperationFXML.fxml", "Math");
         math.mathOperation();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void brightnessDialog(){
+    private void brightnessDialog() {
         zajecia2.brightnessDialog();
-        
+
     }
-    
+
     @FXML
-    private void makeMonochrome(){
+    private void makeMonochrome() {
         zajecia3.naSzaro();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void linearFilter(){
+    private void linearFilter() {
         zajecia4.matrixDialog();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void medianFilter(){
+    private void medianFilter() {
         zajecia4.medianaDialog();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
-    private void kuwaharFilter(){
+    private void kuwaharFilter() {
         zajecia4.kuwaharFilter();
         myImageView1 = DataAccessor.getImageView();
     }
-    
+
     @FXML
     private void createHSVCone() {
         showFXML("/fxmls/HSVCone.fxml", "HSV cone");
@@ -458,7 +500,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void loadJPEGFile() throws FileNotFoundException, IOException {
-        
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setTitle("Load PPM P3/P6 file");
@@ -473,7 +515,7 @@ public class FXMLDocumentController implements Initializable {
             Image image2 = new Image(file.toURI().toString());
             myImageView1.setImage(image2);
             DataAccessor.setImageView(myImageView1);
-            
+
 //            FileInputStream fis = new FileInputStream(file);
 //            BufferedImage src = null;
 //            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");
@@ -490,7 +532,6 @@ public class FXMLDocumentController implements Initializable {
 //            myImage.setHeight(LoadFiles.height);
 //            myImage.setWidth(LoadFiles.width);
 //            myImage.getGraphicsContext2D().drawImage(image, 0, 0);
-
         }
     }
 

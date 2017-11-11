@@ -7,6 +7,7 @@ package controllers;
 
 import data.DataAccessor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -52,15 +53,18 @@ public class TranslateFXMLController implements Initializable {
         double xPoint = Double.parseDouble(xCoordText.getText());
         double yPoint = Double.parseDouble(yCoordText.getText());
         List<Circle> polygon = DataAccessor.getMyPolygons().get(chosenPrimitive.getSelectionModel().getSelectedIndex());
+        List<Circle> newPolygon = new ArrayList<>();
         polygon.forEach((circle) -> {
             Double circlexPoint=circle.getCenterX();
             Double circleyPoint=circle.getCenterY();
             circlexPoint=circlexPoint+xPoint;
             circleyPoint=circleyPoint+yPoint;
-            circle.setCenterX(circlexPoint);
-            circle.setCenterY(circleyPoint);
+            Circle ncircle = new Circle(circlexPoint, circleyPoint, 5);
+            newPolygon.add(ncircle);
+//            circle.setCenterX(circlexPoint);
+//            circle.setCenterY(circleyPoint);
         });
-        DataAccessor.getMyPolygons().set(chosenPrimitive.getSelectionModel().getSelectedIndex(), polygon);
+        DataAccessor.getMyPolygons().add(newPolygon);
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
     }
