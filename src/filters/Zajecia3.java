@@ -24,10 +24,11 @@ import javafx.scene.layout.GridPane;
  * @author Mateusz
  */
 public class Zajecia3 {
+
     public Image obrazek;
-    
+
     public void naSzaro() {
-        obrazek=DataAccessor.imageView.getImage();
+        obrazek = DataAccessor.imageView.getImage();
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelReader pr = obrazek.getPixelReader();
         PixelWriter pw = wimage.getPixelWriter();
@@ -38,7 +39,7 @@ public class Zajecia3 {
                 int red = (argb >> 16) & 0xFF;
                 int green = (argb >> 8) & 0xFF;
                 int blue = argb & 0xFF;
-                int gray = (int) (2*red+5*green+1*blue)/8;
+                int gray = (int) (2 * red + 5 * green + 1 * blue) / 8;
                 //int gray = (red + green + blue) / 3;
                 argb = (a << 24) + (gray << 16) + (gray << 8) + gray;
                 pw.setArgb(i, j, argb);
@@ -47,13 +48,16 @@ public class Zajecia3 {
         DataAccessor.imageView.setImage(wimage);
         DataAccessor.setIsGray(true);
     }
-    public void binaryzacjaManualDialog(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void binaryzacjaManualDialog() {
+        obrazek = DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Binaryzacja manualna");
-        if (!DataAccessor.isIsGray())
+        if (!DataAccessor.isIsGray()) {
             dialog.setHeaderText("Podaj wartość progową. Obraz zostanie przekonwertowany do skali szarości");
-        else dialog.setHeaderText("Podaj wartość progową");
+        } else {
+            dialog.setHeaderText("Podaj wartość progową");
+        }
         Label label1 = new Label("Wartość: ");
         TextField text1 = new TextField();
         GridPane grid = new GridPane();
@@ -64,10 +68,9 @@ public class Zajecia3 {
         dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         Optional<int[]> result = dialog.showAndWait();
         if (result.isPresent()) {
-            if (Integer.parseInt(text1.getText())>=0){
+            if (Integer.parseInt(text1.getText()) >= 0) {
                 binaryzacjaManual(Integer.parseInt(text1.getText()));
-            }
-            else {
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Błąd wartości");
@@ -76,11 +79,12 @@ public class Zajecia3 {
             }
         }
     }
-    public void binaryzacjaManual(int parametr){
-        if (!DataAccessor.isIsGray()){
+
+    public void binaryzacjaManual(int parametr) {
+        if (!DataAccessor.isIsGray()) {
             naSzaro();
         }
-        obrazek=DataAccessor.imageView.getImage();
+        obrazek = DataAccessor.imageView.getImage();
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelReader pr = obrazek.getPixelReader();
         PixelWriter pw = wimage.getPixelWriter();
@@ -101,17 +105,20 @@ public class Zajecia3 {
         }
         DataAccessor.imageView.setImage(wimage);
     }
-    public void niblackDialog(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void niblackDialog() {
+        obrazek = DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Metoda Niblacka");
-        if (false)
+        if (false) {
             dialog.setHeaderText("Podaj parametry. Obraz zostanie przekonwertowany do skali szarości");
-        else dialog.setHeaderText("Podaj parametry");
+        } else {
+            dialog.setHeaderText("Podaj parametry");
+        }
         Label label1 = new Label("Rozmiar okna: ");
-	Label label2 = new Label("Parametr progowania: ");
+        Label label2 = new Label("Parametr progowania: ");
         TextField text1 = new TextField();
-	TextField text2 = new TextField();
+        TextField text2 = new TextField();
         text1.setText("0");
         text2.setText("0.0");
         GridPane grid = new GridPane();
@@ -124,8 +131,8 @@ public class Zajecia3 {
         dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         Optional<int[]> result = dialog.showAndWait();
         if (result.isPresent()) {
-            int bok=Integer.parseInt(text1.getText());
-            double wspolczynnik=Double.parseDouble(text2.getText());
+            int bok = Integer.parseInt(text1.getText());
+            double wspolczynnik = Double.parseDouble(text2.getText());
             binaryzacjaNiblack(bok, wspolczynnik);
             /*
             else {
@@ -135,18 +142,19 @@ public class Zajecia3 {
                 alert.setContentText("Wpisano niewłaściwe wartości");
                 alert.showAndWait();
             }
-            */
+             */
         }
     }
-    public void binaryzacjaNiblack(int bok, double wspolczynnik){
-        if (false){
+
+    public void binaryzacjaNiblack(int bok, double wspolczynnik) {
+        if (false) {
             naSzaro();
         }
-        obrazek=DataAccessor.imageView.getImage();
+        obrazek = DataAccessor.imageView.getImage();
         PixelReader pr = obrazek.getPixelReader();
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelWriter pw = wimage.getPixelWriter();
-        bok=bok/2;
+        bok = bok / 2;
         double prog;
         int width = (int) obrazek.getWidth();
         int height = (int) obrazek.getHeight();
@@ -195,11 +203,12 @@ public class Zajecia3 {
         }
         DataAccessor.imageView.setImage(wimage);
     }
-    public void binaryzacjaOtsu(){
-        if (false){
+
+    public void binaryzacjaOtsu() {
+        if (false) {
             naSzaro();
         }
-        obrazek=DataAccessor.imageView.getImage();
+        obrazek = DataAccessor.imageView.getImage();
         int hist[] = new int[256];
         int total = (int) obrazek.getWidth() * (int) obrazek.getHeight();
         PixelReader pr = obrazek.getPixelReader();

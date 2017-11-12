@@ -179,7 +179,7 @@ public class Zajecia4 {
         dialog.setHeaderText("Rozmiar maski");
         dialog.setContentText("Wybierz rozmiar maski:");
         Optional<Integer> result = dialog.showAndWait();
-        if (result.isPresent()){
+        if (result.isPresent()) {
             medianaFilter(result.get());
         }
     }
@@ -192,16 +192,16 @@ public class Zajecia4 {
         for (int i = mask / 2; i < obrazek.getWidth() - mask / 2; i++) {
             for (int j = mask / 2; j < obrazek.getHeight() - mask / 2; j++) {
                 int newPixel = pr.getArgb(i, j);
-                int midR=getMiddle(i,j,mask,16);
-                int midG=getMiddle(i,j,mask,8);
-                int midB=getMiddle(i,j,mask,0);
+                int midR = getMiddle(i, j, mask, 16);
+                int midG = getMiddle(i, j, mask, 8);
+                int midB = getMiddle(i, j, mask, 0);
                 int a2 = (newPixel >> 24) & 0xFF;
                 newPixel = (a2 << 24) + ((int) midR << 16) + ((int) midG << 8) + (int) midB;
                 pw.setArgb(i, j, newPixel);
             }
         }
         DataAccessor.imageView.setImage(wimage);
-        
+
     }
 
     public int getMiddle(int x, int y, int mask, int color) {
@@ -216,6 +216,6 @@ public class Zajecia4 {
         }
         Collections.sort(pixels);
         Collections.reverse(pixels);
-        return pixels.get(pixels.size()/2);
+        return pixels.get(pixels.size() / 2);
     }
 }

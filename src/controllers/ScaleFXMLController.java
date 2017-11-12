@@ -34,6 +34,7 @@ public class ScaleFXMLController implements Initializable {
     public TextField yCoordText;
     @FXML
     public TextField radiusText;
+
     /**
      * Initializes the controller class.
      */
@@ -43,16 +44,16 @@ public class ScaleFXMLController implements Initializable {
         DataAccessor.getMyPolygons().forEach((polygon) -> {
             chosenPrimitive.getItems().add(polygon.toString());
         });
-    }    
-    
+    }
+
     @FXML
     public void dismiss(ActionEvent event) {
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
     }
-    
+
     @FXML
-    public void rotate(ActionEvent event){
+    public void rotate(ActionEvent event) {
         double xPoint = Double.parseDouble(xCoordText.getText());
         double yPoint = Double.parseDouble(yCoordText.getText());
         double angle = Double.parseDouble(radiusText.getText());
@@ -60,10 +61,10 @@ public class ScaleFXMLController implements Initializable {
         List<Circle> polygon = DataAccessor.getMyPolygons().get(chosenPrimitive.getSelectionModel().getSelectedIndex());
         List<Circle> newPolygon = new ArrayList<>();
         polygon.forEach((circle) -> {
-            Double circlexPoint=circle.getCenterX();
-            Double circleyPoint=circle.getCenterY();
-            circlexPoint=circlexPoint*angle+(1-angle)*xPoint;
-            circleyPoint=circleyPoint*angle+(1-angle)*yPoint;
+            Double circlexPoint = circle.getCenterX();
+            Double circleyPoint = circle.getCenterY();
+            circlexPoint = circlexPoint * angle + (1 - angle) * xPoint;
+            circleyPoint = circleyPoint * angle + (1 - angle) * yPoint;
             Circle ncircle = new Circle(circlexPoint, circleyPoint, 5);
             newPolygon.add(ncircle);
 //            circle.setCenterX(circlexPoint);
@@ -72,7 +73,7 @@ public class ScaleFXMLController implements Initializable {
         DataAccessor.getMyPolygons().add(newPolygon);
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
-        
+
     }
-    
+
 }

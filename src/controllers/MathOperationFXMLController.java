@@ -30,7 +30,7 @@ public class MathOperationFXMLController implements Initializable {
     public TextField bField;
     @FXML
     public TextField gField;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -38,14 +38,14 @@ public class MathOperationFXMLController implements Initializable {
         rField.setText(String.valueOf(1));
         gField.setText(String.valueOf(1));
         bField.setText(String.valueOf(1));
-    }    
-    
+    }
+
     @FXML
     public void dismiss(ActionEvent event) {
         DataAccessor.rgbValues.put("r", Integer.parseInt(rField.getText()));
         DataAccessor.rgbValues.put("g", Integer.parseInt(gField.getText()));
         DataAccessor.rgbValues.put("b", Integer.parseInt(bField.getText()));
-        switch(mathOperation.getSelectionModel().getSelectedIndex()){
+        switch (mathOperation.getSelectionModel().getSelectedIndex()) {
             case 0:
                 DataAccessor.setMathOperation("Sum");
                 break;
@@ -58,7 +58,7 @@ public class MathOperationFXMLController implements Initializable {
             case 3:
                 DataAccessor.setMathOperation("Divide");
                 break;
-                
+
         }
         Stage stage = (Stage) gField.getScene().getWindow();
         stage.close();

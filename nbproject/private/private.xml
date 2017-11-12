@@ -12,10 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/controllers/RotateFXMLController.java</file>
+            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/data/DataAccessor.java</file>
             <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/controllers/FXMLDocumentController.java</file>
-            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/controllers/TranslateFXMLController.java</file>
-            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/controllers/ScaleFXMLController.java</file>
+            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/morfology/MorfologyMethods.java</file>
+            <file>file:/C:/Users/Mateusz/OneDrive/Studia/Semestr%20VII/Grafika%20komputerowa/Pracownia/1/MW_GK_projekt/src/binarization/BinariizationMethods.java</file>
         </group>
     </open-files>
 </project-private>

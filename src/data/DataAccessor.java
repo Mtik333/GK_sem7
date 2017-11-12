@@ -39,7 +39,7 @@ public class DataAccessor {
     public static ImageView imageView;
     public static String mathOperation;
     public static boolean isGray = false;
-    public static int thresholdForIterations=128;
+    public static int thresholdForIterations = 128;
     public static double minimalDistribution;
     public static List<Circle> controlPoints = new ArrayList<>();
     public static List<Circle> bezierPoints = new ArrayList<>();
@@ -103,7 +103,6 @@ public class DataAccessor {
     public static void setMinimalDistribution(double minimalDistribution) {
         DataAccessor.minimalDistribution = minimalDistribution;
     }
-    
 
     public static int getThresholdForIterations() {
         return thresholdForIterations;
@@ -128,7 +127,7 @@ public class DataAccessor {
     public static void setMathOperation(String mathOperation) {
         DataAccessor.mathOperation = mathOperation;
     }
-    
+
     public static ImageView getImageView() {
         return imageView;
     }

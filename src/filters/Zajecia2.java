@@ -47,7 +47,7 @@ import javafx.stage.Stage;
 public class Zajecia2 {
     //Wyrównanie i rozciąganie: http://ics.p.lodz.pl/~adamwoj/WSFI/PO/2_wyklad_PO.pdf
     //Większość algorytmów: http://www.algorytm.org/przetwarzanie-obrazow/
-    
+
     public int tabred[] = new int[256];
     public int tabgreen[] = new int[256];
     public int tabblue[] = new int[256];
@@ -57,37 +57,39 @@ public class Zajecia2 {
     public int[] lutg = new int[256];
     public int[] lutb = new int[256];
     public Image obrazek;
-    
-    public void brightnessDialog(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void brightnessDialog() {
+        obrazek = DataAccessor.imageView.getImage();
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Zmiana jasnosci obrazka");
         dialog.setHeaderText("Zmieniaj jasnosc (funkcja kwadratowa)");
-        Button button1=new Button("Ciemniej");
-        Button button2=new Button("Jasniej");
+        Button button1 = new Button("Ciemniej");
+        Button button2 = new Button("Jasniej");
         GridPane grid = new GridPane();
-        grid.add(button1,1,1);
-        grid.add(button2,1,2);
+        grid.add(button1, 1, 1);
+        grid.add(button2, 1, 2);
         ButtonType buttonTypeOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         dialog.getDialogPane().setContent(grid);
         button1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                obrazek=DataAccessor.imageView.getImage();
+            @Override
+            public void handle(ActionEvent e) {
+                obrazek = DataAccessor.imageView.getImage();
                 darkenUp(2);
             }
         });
         button2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                obrazek=DataAccessor.imageView.getImage();
+            @Override
+            public void handle(ActionEvent e) {
+                obrazek = DataAccessor.imageView.getImage();
                 brightenUp(2);
             }
         });
         dialog.show();
     }
-    
-    public void darkenUpDialog(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void darkenUpDialog() {
+        obrazek = DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Zaciemnianie obrazka");
         dialog.setHeaderText("Podaj wartość współczynnika (funkcja kwadratowa)");
@@ -101,10 +103,9 @@ public class Zajecia2 {
         dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         Optional<int[]> result = dialog.showAndWait();
         if (result.isPresent()) {
-            if (Integer.parseInt(text1.getText())>=0){
+            if (Integer.parseInt(text1.getText()) >= 0) {
                 darkenUp(Integer.parseInt(text1.getText()));
-            }
-            else {
+            } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Błąd wartości");
@@ -113,22 +114,20 @@ public class Zajecia2 {
             }
         }
     }
-    
-    public void darkenUp(int wykladnik){
+
+    public void darkenUp(int wykladnik) {
         lut = new int[256];
         int red = 0;
         int green = 0;
         int blue = 0;
         PixelReader pixelReader = obrazek.getPixelReader();
         for (double i = 0; i < 256; i++) {
-            if ((int)(Math.pow(255+Math.E,i/255)-Math.E)>255){
-                lut[(int)i]=255;
-            }
-            else if((int)(Math.pow(255+Math.E,i/255)-Math.E)<0){
-                lut[(int)i]=0;
-            }
-            else {
-                lut[(int)i]=(int)(Math.pow(255+Math.E,i/255)-Math.E);
+            if ((int) (Math.pow(255 + Math.E, i / 255) - Math.E) > 255) {
+                lut[(int) i] = 255;
+            } else if ((int) (Math.pow(255 + Math.E, i / 255) - Math.E) < 0) {
+                lut[(int) i] = 0;
+            } else {
+                lut[(int) i] = (int) (Math.pow(255 + Math.E, i / 255) - Math.E);
             }
             /*
             if ((int)(255*Math.pow(i/255,Math.E))>255){
@@ -140,8 +139,8 @@ public class Zajecia2 {
             else{
                 lut[(int)i]=(int)(255*Math.pow(i/255,Math.E));
             }
-            */
-            
+             */
+
         }
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelWriter pw = wimage.getPixelWriter();
@@ -158,9 +157,9 @@ public class Zajecia2 {
         }
         DataAccessor.imageView.setImage(wimage);
     }
-    
-    public void brightenUpDialog(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void brightenUpDialog() {
+        obrazek = DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Rozjaśnienie obrazka");
         dialog.setHeaderText("Podaj wartość współczynnika (funkcja logarytmiczna)");
@@ -174,10 +173,9 @@ public class Zajecia2 {
         dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         Optional<int[]> result = dialog.showAndWait();
         if (result.isPresent()) {
-            if (Integer.parseInt(text1.getText())>=0){
+            if (Integer.parseInt(text1.getText()) >= 0) {
                 brightenUp(Integer.parseInt(text1.getText()));
-            }
-            else {
+            } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Błąd wartości");
@@ -186,22 +184,20 @@ public class Zajecia2 {
             }
         }
     }
-    
-    public void brightenUp(int wspolczynnik){
+
+    public void brightenUp(int wspolczynnik) {
         lut = new int[256];
         int red = 0;
         int green = 0;
         int blue = 0;
         PixelReader pixelReader = obrazek.getPixelReader();
         for (double i = 0; i < 256; i++) {
-            if ((int)(255*Math.log(Math.E+i)/Math.log(Math.E+255))>255){
-                lut[(int)i]=255;
-            }
-            else if ((int)(255*Math.log(Math.E+i)/Math.log(Math.E+255))<0){
-                lut[(int)i]=0;
-            }
-            else{
-                lut[(int)i]=(int)(255*Math.log(Math.E+i)/Math.log(Math.E+255));
+            if ((int) (255 * Math.log(Math.E + i) / Math.log(Math.E + 255)) > 255) {
+                lut[(int) i] = 255;
+            } else if ((int) (255 * Math.log(Math.E + i) / Math.log(Math.E + 255)) < 0) {
+                lut[(int) i] = 0;
+            } else {
+                lut[(int) i] = (int) (255 * Math.log(Math.E + i) / Math.log(Math.E + 255));
             }
         }
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
@@ -219,7 +215,8 @@ public class Zajecia2 {
         }
         DataAccessor.imageView.setImage(wimage);
     }
-    public void showHistogramDialog(){
+
+    public void showHistogramDialog() {
         List<String> choices = new ArrayList<>();
         choices.add("Czerwony");
         choices.add("Zielony");
@@ -230,23 +227,23 @@ public class Zajecia2 {
         dialog.setHeaderText("Wybierz kolor histogramu");
         dialog.setContentText("Wybierz kolor histogramu:");
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
+        if (result.isPresent()) {
             showHistogram2(result.get());
         }
     }
-    
-    public void showHistogram2(String color){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void showHistogram2(String color) {
+        obrazek = DataAccessor.imageView.getImage();
         Stage stage = new Stage();
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> barChart = 
-            new BarChart<>(xAxis,yAxis);
+        final BarChart<String, Number> barChart
+                = new BarChart<>(xAxis, yAxis);
         barChart.setCategoryGap(0);
         barChart.setBarGap(0);
         xAxis.setLabel("Skala");
         XYChart.Series series1 = new XYChart.Series();
-        switch(color){
+        switch (color) {
             case "Czerwony":
                 series1.setName("Czerwone");
                 break;
@@ -282,31 +279,31 @@ public class Zajecia2 {
                 int argb = pixelReader.getArgb(i, j);
                 r = (argb >> 16) & 0xFF;
                 g = (argb >> 8) & 0xFF;
-                b = argb  & 0xFF;
+                b = argb & 0xFF;
                 tabred[r]++;
                 tabgreen[g]++;
                 tabblue[b]++;
             }
         }
-        for (int i=0; i<256; i++){
-            switch(color){
-            case "Czerwony":
-                series1.getData().add(new XYChart.Data(""+i,tabred[i]));
-                barChart.setStyle("CHART_COLOR_1: #FF0000;");
-                break;
-            case "Niebieski":
-                series1.getData().add(new XYChart.Data(""+i,tabblue[i]));
-                barChart.setStyle("CHART_COLOR_1: #0000FF;");
-                break;
-            case "Zielony":
-                series1.getData().add(new XYChart.Data(""+i,tabgreen[i]));
-                barChart.setStyle("CHART_COLOR_1: #00FF00;");
-                break;
-            case "Uśredniony":
-                int szare=(tabred[i]+tabgreen[i]+tabblue[i])/3;
-                series1.getData().add(new XYChart.Data(""+i,szare));
-                barChart.setStyle("CHART_COLOR_1: #000000;");
-                break;
+        for (int i = 0; i < 256; i++) {
+            switch (color) {
+                case "Czerwony":
+                    series1.getData().add(new XYChart.Data("" + i, tabred[i]));
+                    barChart.setStyle("CHART_COLOR_1: #FF0000;");
+                    break;
+                case "Niebieski":
+                    series1.getData().add(new XYChart.Data("" + i, tabblue[i]));
+                    barChart.setStyle("CHART_COLOR_1: #0000FF;");
+                    break;
+                case "Zielony":
+                    series1.getData().add(new XYChart.Data("" + i, tabgreen[i]));
+                    barChart.setStyle("CHART_COLOR_1: #00FF00;");
+                    break;
+                case "Uśredniony":
+                    int szare = (tabred[i] + tabgreen[i] + tabblue[i]) / 3;
+                    series1.getData().add(new XYChart.Data("" + i, szare));
+                    barChart.setStyle("CHART_COLOR_1: #000000;");
+                    break;
             }
         }
         barChart.getData().addAll(series1);
@@ -318,16 +315,16 @@ public class Zajecia2 {
         stage.setScene(scene);
         stage.show();
     }
-    
-    public void stretchHistogramDialog(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void stretchHistogramDialog() {
+        obrazek = DataAccessor.imageView.getImage();
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Rozciągnięcie obrazka");
         dialog.setHeaderText("Podaj wartości odcinające");
         Label label1 = new Label("Wartość A piksela: ");
-	Label label2 = new Label("Wartość B piksela: ");
+        Label label2 = new Label("Wartość B piksela: ");
         TextField text1 = new TextField();
-	TextField text2 = new TextField();
+        TextField text2 = new TextField();
         GridPane grid = new GridPane();
         grid.add(label1, 1, 2);
         grid.add(text1, 2, 2);
@@ -338,16 +335,15 @@ public class Zajecia2 {
         dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         Optional<int[]> result = dialog.showAndWait();
         if (result.isPresent()) {
-            if (Integer.parseInt(text1.getText())>=0 && Integer.parseInt(text2.getText())>=0 && Integer.parseInt(text1.getText())<=255 && Integer.parseInt(text2.getText())<=255){
-                int[] parameters= {Integer.parseInt(text1.getText()), Integer.parseInt(text2.getText())};
-                if (parameters[0]>parameters[1]){
-                    int c=parameters[0];
-                    parameters[0]=parameters[1];
-                    parameters[1]=c;
+            if (Integer.parseInt(text1.getText()) >= 0 && Integer.parseInt(text2.getText()) >= 0 && Integer.parseInt(text1.getText()) <= 255 && Integer.parseInt(text2.getText()) <= 255) {
+                int[] parameters = {Integer.parseInt(text1.getText()), Integer.parseInt(text2.getText())};
+                if (parameters[0] > parameters[1]) {
+                    int c = parameters[0];
+                    parameters[0] = parameters[1];
+                    parameters[1] = c;
                 }
                 stretchHistogram(parameters);
-            }
-            else {
+            } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Błąd wartości");
@@ -356,7 +352,8 @@ public class Zajecia2 {
             }
         }
     }
-    public void stretchHistogram(int[] parameters){
+
+    public void stretchHistogram(int[] parameters) {
         PixelReader pixelReader = obrazek.getPixelReader();
         int red = 0;
         int green = 0;
@@ -364,7 +361,7 @@ public class Zajecia2 {
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelWriter pw = wimage.getPixelWriter();
         for (int i = 0; i < 256; i++) {
-            lut[i] = (int)(255 / (parameters[1] - parameters[0])) * (i - parameters[0]);
+            lut[i] = (int) (255 / (parameters[1] - parameters[0])) * (i - parameters[0]);
             if (lut[i] < 0) {
                 lut[i] = 0;
             }
@@ -404,9 +401,9 @@ public class Zajecia2 {
         }
         DataAccessor.imageView.setImage((Image) wimage);
     }
-    
-    public void equalizeHistogram(){
-        obrazek=DataAccessor.imageView.getImage();
+
+    public void equalizeHistogram() {
+        obrazek = DataAccessor.imageView.getImage();
         int red = 0;
         int green = 0;
         int blue = 0;
@@ -438,9 +435,9 @@ public class Zajecia2 {
         lutg = new int[256];
         lutb = new int[256];
         for (int i = 0; i < 256; i++) {
-            lutr[i] = (int)(255 * hr[i] / rozmiar);
-            lutg[i] = (int)(255 * hg[i] / rozmiar);
-            lutb[i] = (int)(255 * hb[i] / rozmiar);
+            lutr[i] = (int) (255 * hr[i] / rozmiar);
+            lutg[i] = (int) (255 * hg[i] / rozmiar);
+            lutb[i] = (int) (255 * hb[i] / rozmiar);
         }
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelWriter pw = wimage.getPixelWriter();
@@ -456,11 +453,12 @@ public class Zajecia2 {
             }
         }
         DataAccessor.imageView.setImage(wimage);
-        
+
     }
+
     //funkcja nieużywana
-    public void showHistogram(){
-        obrazek=DataAccessor.imageView.getImage();
+    public void showHistogram() {
+        obrazek = DataAccessor.imageView.getImage();
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         Label redget = new Label();
@@ -502,7 +500,7 @@ public class Zajecia2 {
                 int argb = pixelReader.getArgb(i, j);
                 r = (argb >> 16) & 0xFF;
                 g = (argb >> 8) & 0xFF;
-                b = argb  & 0xFF;
+                b = argb & 0xFF;
                 tabred[r]++;
                 tabgreen[g]++;
                 tabblue[b]++;

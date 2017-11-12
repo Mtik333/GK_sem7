@@ -212,11 +212,11 @@ public class BinariizationMethods {
         for (int i = 0; i <= threshold; i++) {
             totalBackground += hist[i];
         }
-        double probBackground=(double)totalBackground/(double)total;
-        double probObject=1-probBackground;
+        double probBackground = (double) totalBackground / (double) total;
+        double probObject = 1 - probBackground;
         double logarithmBackground = (Math.log(probBackground) / Math.log(2));
         double logarithmObject = (Math.log(probObject) / Math.log(2));
-        double entropy=(-1)*probObject*logarithmObject+(-1)*probBackground*logarithmBackground;
+        double entropy = (-1) * probObject * logarithmObject + (-1) * probBackground * logarithmBackground;
         if (Math.abs(entropy - 1) <= 0.02) {
             return true;
         } else {

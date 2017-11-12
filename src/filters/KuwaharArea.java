@@ -5,8 +5,6 @@
  */
 package filters;
 
-import java.util.Comparator;
-
 /**
  *
  * @author Mateusz
@@ -21,7 +19,7 @@ public class KuwaharArea {
     public double varRed;
     public double varGreen;
     public double varBlue;
-    
+
     public KuwaharArea(int x, int y) {
         this.startX = x;
         this.startY = y;
@@ -91,5 +89,4 @@ public class KuwaharArea {
         this.varBlue = varBlue;
     }
 
-    
 }

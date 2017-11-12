@@ -31,6 +31,7 @@ public class TranslateFXMLController implements Initializable {
     public TextField xCoordText;
     @FXML
     public TextField yCoordText;
+
     /**
      * Initializes the controller class.
      */
@@ -40,25 +41,25 @@ public class TranslateFXMLController implements Initializable {
         DataAccessor.getMyPolygons().forEach((polygon) -> {
             chosenPrimitive.getItems().add(polygon.toString());
         });
-    }    
-    
+    }
+
     @FXML
     public void dismiss(ActionEvent event) {
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
-    }   
-    
+    }
+
     @FXML
-    public void rotate(ActionEvent event){
+    public void rotate(ActionEvent event) {
         double xPoint = Double.parseDouble(xCoordText.getText());
         double yPoint = Double.parseDouble(yCoordText.getText());
         List<Circle> polygon = DataAccessor.getMyPolygons().get(chosenPrimitive.getSelectionModel().getSelectedIndex());
         List<Circle> newPolygon = new ArrayList<>();
         polygon.forEach((circle) -> {
-            Double circlexPoint=circle.getCenterX();
-            Double circleyPoint=circle.getCenterY();
-            circlexPoint=circlexPoint+xPoint;
-            circleyPoint=circleyPoint+yPoint;
+            Double circlexPoint = circle.getCenterX();
+            Double circleyPoint = circle.getCenterY();
+            circlexPoint = circlexPoint + xPoint;
+            circleyPoint = circleyPoint + yPoint;
             Circle ncircle = new Circle(circlexPoint, circleyPoint, 5);
             newPolygon.add(ncircle);
 //            circle.setCenterX(circlexPoint);
@@ -68,5 +69,5 @@ public class TranslateFXMLController implements Initializable {
         Stage stage = (Stage) xCoordText.getScene().getWindow();
         stage.close();
     }
-    
+
 }

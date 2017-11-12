@@ -14,7 +14,7 @@
             <HBox layoutX="15.0" layoutY="15.0" VBox.vgrow="ALWAYS">
                <children>
                   <Pane HBox.hgrow="ALWAYS" />
-                  <Label prefHeight="40.0" text="Rotate" textAlignment="CENTER" />
+                  <Label prefHeight="40.0" text="Translate" textAlignment="CENTER" />
                   <Pane HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>

@@ -65,6 +65,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 import loadingfile.Convertion;
 import loadingfile.LoadFiles;
+import morfology.MorfologyMethods;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -117,6 +118,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Pane myCanvaScrollPane1;
 
+    @FXML
+    private ImageView morfImageView1;
+
     private Zajecia2 zajecia2 = new Zajecia2();
     private Zajecia3 zajecia3 = new Zajecia3();
     private Zajecia4 zajecia4 = new Zajecia4();
@@ -124,6 +128,7 @@ public class FXMLDocumentController implements Initializable {
     private BinariizationMethods bmethods = new BinariizationMethods();
     private BezierCurve bezierCurve = new BezierCurve();
     private Transformations transform = new Transformations();
+    private MorfologyMethods morfology = new MorfologyMethods();
     private GraphicsContext gc;
 
     double orgSceneX, orgSceneY; //do przenoszenia wierzcholkow/krawedzi
@@ -149,6 +154,42 @@ public class FXMLDocumentController implements Initializable {
         polygons();
     }
 
+    @FXML
+    private void thickening() {
+        morfology.thickening();
+        myImageView1 = DataAccessor.getImageView();
+    }
+
+    @FXML
+    private void thinning() {
+        morfology.thinning();
+        myImageView1 = DataAccessor.getImageView();
+    }
+
+    @FXML
+    private void dilation() {
+        morfology.dilation();
+        myImageView1 = DataAccessor.getImageView();
+    }
+
+    @FXML
+    private void erosion() {
+        morfology.erosion();
+        morfImageView1 = DataAccessor.getImageView();
+    }
+
+    @FXML
+    private void opening() {
+        morfology.opening();
+        morfImageView1 = DataAccessor.getImageView();
+    }
+
+    @FXML
+    private void closing() {
+        morfology.closing();
+        morfImageView1 = DataAccessor.getImageView();
+    }
+
     private void polygons() {
         bezierCanva1.setOnMouseClicked((MouseEvent event) -> {
             //gc.clearRect(0, 0, 900, 480);
@@ -161,27 +202,27 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void loadFromFile(){
+    private void loadFromFile() {
         gc.clearRect(0, 0, 900, 480);
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader("shapes.json"));
             JSONArray array = (JSONArray) obj;
             JSONObject object = (JSONObject) array.get(0);
-            boolean end=false;
-            int i=0;
+            boolean end = false;
+            int i = 0;
             List<List<Circle>> polygons = new ArrayList<>();
-            while(!end){
+            while (!end) {
                 List<Circle> circles = new ArrayList<>();
-                JSONArray points =(JSONArray) object.get(String.valueOf(i));
-                if (points==null){
-                    end=true;
+                JSONArray points = (JSONArray) object.get(String.valueOf(i));
+                if (points == null) {
+                    end = true;
                     break;
                 }
                 JSONObject objPoints = (JSONObject) points.get(0);
-                for (int j=0; j<objPoints.size()/2; j++){
-                    Double xPoint=(Double) objPoints.get("x"+j);
-                    Double yPoint=(Double) objPoints.get("y"+j);
+                for (int j = 0; j < objPoints.size() / 2; j++) {
+                    Double xPoint = (Double) objPoints.get("x" + j);
+                    Double yPoint = (Double) objPoints.get("y" + j);
                     Circle circle = new Circle(xPoint, yPoint, 5);
                     circles.add(circle);
                 }
@@ -194,19 +235,19 @@ public class FXMLDocumentController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void saveToFile() throws IOException {
         JSONArray allPolygons = new JSONArray();
         JSONObject polygon1 = new JSONObject();
-        int i=0;
+        int i = 0;
         for (List<Circle> polygon : DataAccessor.getMyPolygons()) {
             JSONArray list = new JSONArray();
             JSONObject object = new JSONObject();
-            int j=0;
+            int j = 0;
             for (Circle circle : polygon) {
-                object.put("x"+j, circle.getCenterX());
-                object.put("y"+j, circle.getCenterY());
+                object.put("x" + j, circle.getCenterX());
+                object.put("y" + j, circle.getCenterY());
                 j++;
             }
             list.add(object);
@@ -257,8 +298,8 @@ public class FXMLDocumentController implements Initializable {
         drawPolygon();
         myCanvaScrollPane1.getChildren().add(DataAccessor.getChangePoint());
     }
-    
-    private void drawPolygon(){
+
+    private void drawPolygon() {
         myCanvaScrollPane1.getChildren().clear();
         myCanvaScrollPane1.getChildren().add(bezierCanva1);
         DataAccessor.getMyPolygons().forEach((circles) -> {
@@ -273,7 +314,7 @@ public class FXMLDocumentController implements Initializable {
             gc.strokePolygon(xpoints, ypoints, circles.size());
         });
     }
-    
+
     private Color randomPaint() {
         int red = ThreadLocalRandom.current().nextInt(0, 255 + 1);
         int green = ThreadLocalRandom.current().nextInt(0, 255 + 1);
@@ -505,7 +546,8 @@ public class FXMLDocumentController implements Initializable {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setTitle("Load PPM P3/P6 file");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("JPG/JPEG files", "*.jpg", "*.jpeg")
+                new FileChooser.ExtensionFilter("JPG/JPEG files", "*.jpg", "*.jpeg"),
+                new FileChooser.ExtensionFilter("PNG files", "*.png")
         );
         File file = fileChooser.showOpenDialog(solver.getScene().getWindow());
         if (file != null) {
@@ -515,7 +557,8 @@ public class FXMLDocumentController implements Initializable {
             Image image2 = new Image(file.toURI().toString());
             myImageView1.setImage(image2);
             DataAccessor.setImageView(myImageView1);
-
+            morfImageView1.setImage(image2);
+            DataAccessor.setImageView(morfImageView1);
 //            FileInputStream fis = new FileInputStream(file);
 //            BufferedImage src = null;
 //            Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType("image/jpeg");

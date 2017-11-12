@@ -16,10 +16,10 @@ import javafx.scene.image.WritableImage;
  * @author Mateusz
  */
 public class MathOperationFilter {
-    
+
     public Image obrazek;
-    
-    public void mathOperation(){
+
+    public void mathOperation() {
         obrazek = DataAccessor.imageView.getImage();
         WritableImage wimage = new WritableImage((int) obrazek.getWidth(), (int) obrazek.getHeight());
         PixelReader pr = obrazek.getPixelReader();
@@ -31,26 +31,26 @@ public class MathOperationFilter {
                 int red = (newPixel >> 16) & 0xFF;
                 int green = (newPixel >> 8) & 0xFF;
                 int blue = newPixel & 0xFF;
-                switch(DataAccessor.getMathOperation()){
+                switch (DataAccessor.getMathOperation()) {
                     case "Sum":
-                        red = red+DataAccessor.rgbValues.get("r");
-                        green = green+DataAccessor.rgbValues.get("g");
-                        blue = blue+DataAccessor.rgbValues.get("b");
+                        red = red + DataAccessor.rgbValues.get("r");
+                        green = green + DataAccessor.rgbValues.get("g");
+                        blue = blue + DataAccessor.rgbValues.get("b");
                         break;
                     case "Subtract":
-                        red = red-DataAccessor.rgbValues.get("r");
-                        green = green-DataAccessor.rgbValues.get("g");
-                        blue = blue-DataAccessor.rgbValues.get("b");
+                        red = red - DataAccessor.rgbValues.get("r");
+                        green = green - DataAccessor.rgbValues.get("g");
+                        blue = blue - DataAccessor.rgbValues.get("b");
                         break;
                     case "Multiply":
-                        red = red*DataAccessor.rgbValues.get("r");
-                        green = green*DataAccessor.rgbValues.get("g");
-                        blue = blue*DataAccessor.rgbValues.get("b");
+                        red = red * DataAccessor.rgbValues.get("r");
+                        green = green * DataAccessor.rgbValues.get("g");
+                        blue = blue * DataAccessor.rgbValues.get("b");
                         break;
                     case "Divide":
-                        red = red/DataAccessor.rgbValues.get("r");
-                        green = green/DataAccessor.rgbValues.get("g");
-                        blue = blue/DataAccessor.rgbValues.get("b");
+                        red = red / DataAccessor.rgbValues.get("r");
+                        green = green / DataAccessor.rgbValues.get("g");
+                        blue = blue / DataAccessor.rgbValues.get("b");
                         break;
                 }
                 red = red < 0 ? 0 : red;

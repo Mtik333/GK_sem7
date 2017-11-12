@@ -203,14 +203,25 @@
                      <items>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#resetCanva" prefWidth="100.0" text="Reset canva" textAlignment="CENTER" wrapText="true" />
+                              <Button mnemonicParsing="false" onAction="#loadJPEGFile" prefWidth="100.0" text="Load image" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#meanIterativeSelection" prefWidth="100.0" text="Binarization" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#dilation" prefWidth="100.0" text="Dilation" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#erosion" prefWidth="100.0" text="Erosion" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#opening" prefWidth="100.0" text="Opening" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" onAction="#closing" prefWidth="100.0" text="Closing" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="110.0" mnemonicParsing="false" onAction="#thinning" prefWidth="100.0" text="Thinning" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" onAction="#thickening" prefWidth="100.0" text="Thickening" textAlignment="CENTER" wrapText="true" />
                            </children>
                         </VBox>
-                        <Pane fx:id="myCanvaScrollPane11">
-                           <children>
-                              <Canvas fx:id="bezierCanva11" height="480.0" width="900.0" />
-                           </children>
-                        </Pane>
+                        <ScrollPane>
+                           <content>
+                              <ImageView fx:id="morfImageView1" fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </content>
+                        </ScrollPane>
                      </items>
                   </SplitPane>
                </content>

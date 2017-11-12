@@ -12,49 +12,52 @@ import java.util.Comparator;
  * @author Mateusz
  */
 public class CustomComparator implements Comparator<KuwaharArea> {
-        private String color;
-        public CustomComparator(String color){
-            this.color=color;
+
+    private String color;
+
+    public CustomComparator(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public int compare(KuwaharArea t, KuwaharArea t1) {
+        int comparison = 0;
+        switch (this.color) {
+            case "RED":
+                if (t.getVarRed() < t1.getVarRed()) {
+                    comparison = -1;
+                }
+                if (t.getVarRed() == t1.getVarRed()) {
+                    comparison = 0;
+                }
+                if (t.getVarRed() > t1.getVarRed()) {
+                    comparison = 1;
+                }
+                break;
+            case "GREEN":
+                if (t.getVarGreen() < t1.getVarGreen()) {
+                    comparison = -1;
+                }
+                if (t.getVarGreen() == t1.getVarGreen()) {
+                    comparison = 0;
+                }
+                if (t.getVarGreen() > t1.getVarGreen()) {
+                    comparison = 1;
+                }
+                break;
+            case "BLUE":
+                if (t.getVarBlue() < t1.getVarBlue()) {
+                    comparison = -1;
+                }
+                if (t.getVarBlue() == t1.getVarBlue()) {
+                    comparison = 0;
+                }
+                if (t.getVarBlue() > t1.getVarBlue()) {
+                    comparison = 1;
+                }
+                break;
         }
-        @Override
-        public int compare(KuwaharArea t, KuwaharArea t1) {
-            int comparison=0;
-            switch(this.color){
-                case "RED":
-                    if (t.getVarRed() < t1.getVarRed()) {
-                        comparison=-1;
-                    }
-                    if (t.getVarRed() == t1.getVarRed()) {
-                        comparison=0;
-                    }
-                    if (t.getVarRed() > t1.getVarRed()) {
-                        comparison=1;
-                    }
-                    break;
-                case "GREEN":
-                    if (t.getVarGreen() < t1.getVarGreen()) {
-                        comparison=-1;
-                    }
-                    if (t.getVarGreen() == t1.getVarGreen()) {
-                        comparison=0;
-                    }
-                    if (t.getVarGreen() > t1.getVarGreen()) {
-                        comparison=1;
-                    }
-                    break;
-                case "BLUE":
-                    if (t.getVarBlue() < t1.getVarBlue()) {
-                        comparison=-1;
-                    }
-                    if (t.getVarBlue() == t1.getVarBlue()) {
-                        comparison=0;
-                    }
-                    if (t.getVarBlue() > t1.getVarBlue()) {
-                        comparison=1;
-                    }
-                    break;
-            }
-            /*
+        /*
             if (t.getVarRed() < t1.getVarRed()) {
                 return -1;
             }
@@ -64,8 +67,8 @@ public class CustomComparator implements Comparator<KuwaharArea> {
             if (t.getVarRed() > t1.getVarRed()) {
                 return 1;
             }
-            */
-            return comparison;
-        }
-        
+         */
+        return comparison;
     }
+
+}
